@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-light" flex-directio="column" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a *ngIf="!userService.isSignedIn" class="nav-link" routerLink="register">Register</a>
+          <a *ngIf="!userService.isSignedIn" class="nav-link" routerLink="sign-in">Sign in</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="registered-users">Registered users</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="signed-in-users">Signed in users</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="message">Send message</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="message-all">Send message to all</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="messages">My messages</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="" (click)="signOut()">Sign out</a>
+        </div>
+      </div>
+    </div>
+</nav>

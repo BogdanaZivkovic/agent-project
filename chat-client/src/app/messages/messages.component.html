@@ -1,0 +1,25 @@
+<div class="container-fluid container-bg">
+    <div class="row justify-content-center">
+        <div class="col-md-10 margin-class">
+            <h2 style="text-align: center;">Messages</h2>
+            <table matSort (matSortChange)="sortData($event)" class="table">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="sender">Sender</th>
+                        <th mat-sort-header="subject">Subject</th>
+                        <th mat-sort-header="content">Content</th>
+                        <th mat-sort-header="date">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let message of messageService.messages">
+                        <td>{{message.sender?.username}}</td>
+                        <td>{{message.subject}}</td>
+                        <td>{{message.content}}</td>
+                        <td>{{message.date | date:'short' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

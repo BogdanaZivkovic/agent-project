@@ -1,0 +1,13 @@
+.navbar, .navbar-expand-lg, .navbar-light, .container-fluid, .navbar-nav {
+    flex-direction: column;
+}
+
+.navbar{
+    height: 100vh;
+    width: 100%;
+    align-items: flex-start;
+}
+
+a{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
