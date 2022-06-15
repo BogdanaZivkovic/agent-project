@@ -8,9 +8,12 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import agents.AID;
 import chatmanager.ChatManagerRemote;
-import messagemanager.AgentMessage;
+import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
+import models.AgentCenter;
+import models.AgentType;
 import models.Message;
 import models.User;
 
@@ -33,15 +36,20 @@ public class MessageRestBean implements MessageRest{
 
 	@Override
 	public void sendMessageToUser(Message message) {
-		String hostAlias = chatManager.findByUsername(message.getReceiver().getUsername()).getHost().getAlias();
+		User receiver = message.getReceiver();
+		String username = receiver.getUsername();
+		User user = chatManager.findByUsername(username);
+		AgentCenter agentCenter = user.getHost();
+		String hostAlias = agentCenter.getAlias();
+		
 		if(hostAlias.equals(System.getProperty("jboss.node.name") + ":8080")) {
-			AgentMessage agentMessage = new AgentMessage();
-			agentMessage.userArgs.put("receiver", message.getReceiver().getUsername());
-			agentMessage.userArgs.put("sender", message.getSender().getUsername());
-			agentMessage.userArgs.put("subject", message.getSubject());
-			agentMessage.userArgs.put("content", message.getContent());	
-			agentMessage.userArgs.put("command", "MESSAGE");
-			messageManager.post(agentMessage);				
+			ACLMessage aclMessage = new ACLMessage();
+			aclMessage.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
+			aclMessage.sender = new AID(message.getSender().getUsername(), message.getSender().getHost(), new AgentType("UserAgent"));
+			aclMessage.contentObj = message;
+			aclMessage.content = message.getContent();
+			aclMessage.userArgs.put("command", "MESSAGE");
+			messageManager.post(aclMessage);				
 		}
 		else {
 			System.out.println("Host " + hostAlias + " receives a message to distribute");
@@ -56,9 +64,14 @@ public class MessageRestBean implements MessageRest{
 
 	@Override
 	public void getUserMessages(String username) {
-		AgentMessage agentMessage = new AgentMessage();
-		agentMessage.userArgs.put("receiver", username);
-		agentMessage.userArgs.put("command", "GET_MESSAGES");
-		messageManager.post(agentMessage);		
+		
+		User user = chatManager.findByUsername(username);
+		
+		ACLMessage message = new ACLMessage();
+		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent")));
+		message.userArgs.put("command", "GET_MESSAGES");
+		
+		messageManager.post(message);
+	
 	}
 }

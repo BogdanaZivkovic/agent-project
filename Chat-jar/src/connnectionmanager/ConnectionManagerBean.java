@@ -29,10 +29,12 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import agents.AID;
 import chatmanager.ChatManagerRemote;
-import messagemanager.AgentMessage;
+import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
-import models.Host;
+import models.AgentCenter;
+import models.AgentType;
 import models.User;
 import util.FileUtils;
 import ws.WSChat;
@@ -44,7 +46,7 @@ import ws.WSChat;
 @Path("/connection")
 public class ConnectionManagerBean implements ConnectionManager{
 
-	private Host localNode = new Host();
+	private AgentCenter localNode = new AgentCenter();
 	private List<String> connectedNodes = new ArrayList<String>();
 	
 	@EJB ChatManagerRemote chatManager;
@@ -254,8 +256,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
 				continue;
 			}
-			AgentMessage message = new AgentMessage();
-			message.userArgs.put("receiver", user.getUsername());
+			
+			ACLMessage message = new ACLMessage();
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
 			message.userArgs.put("command", "GET_LOGGEDIN");
 			
 			messageManager.post(message);
@@ -270,10 +273,11 @@ public class ConnectionManagerBean implements ConnectionManager{
 			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
 				continue;
 			}
-			AgentMessage message = new AgentMessage();
-			message.userArgs.put("receiver", user.getUsername());
+						
+			ACLMessage message = new ACLMessage();
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
 			message.userArgs.put("command", "GET_REGISTERED");
-			
+
 			messageManager.post(message);
 		}
 	}

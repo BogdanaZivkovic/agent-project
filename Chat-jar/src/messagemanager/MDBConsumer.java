@@ -6,7 +6,9 @@ import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 
+import agents.AID;
 import agents.Agent;
 import agents.CachedAgentsRemote;
 
@@ -31,16 +33,30 @@ public class MDBConsumer implements MessageListener {
 	/**
 	 * @see MessageListener#onMessage(Message)
 	 */
-	public void onMessage(Message message) {
-		String receiver;
+	public void onMessage(Message message) {		
 		try {
-			receiver = (String) message.getObjectProperty("receiver");
-			Agent agent = (Agent) cachedAgents.getRunningAgents().get(receiver);
-			agent.handleMessage(message);
+			processMessage(message);
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private void processMessage(Message message) throws JMSException {
+		ACLMessage acl = (ACLMessage) ((ObjectMessage) message).getObject();
+		deliverMessage(acl);
 	}
 
+	private void deliverMessage(ACLMessage msg) {
+		
+		for (AID receiverAID : msg.receivers) {
+			
+			Agent agent = (Agent) cachedAgents.getByAID(receiverAID);
+			
+			if (agent != null) {
+				agent.handleMessage(msg);
+			} else {
+				System.out.println("No such agent");
+			}
+		}
+	}
 }

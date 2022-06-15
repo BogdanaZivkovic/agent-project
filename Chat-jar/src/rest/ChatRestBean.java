@@ -7,10 +7,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import agentmanager.AgentManagerRemote;
+import agents.AID;
 import chatmanager.ChatManagerRemote;
 import connnectionmanager.ConnectionManager;
-import messagemanager.AgentMessage;
+import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
+import models.AgentType;
 import models.User;
 import util.JNDILookup;
 
@@ -37,9 +39,9 @@ public class ChatRestBean implements ChatRest {
 
 		for (User loggedInUser : chatManager.loggedInUsers()) {
 			if(loggedInUser.getHost().getAlias().equals(System.getProperty("jboss.node.name") + ":8080")) {
-				AgentMessage message = new AgentMessage();
-				message.userArgs.put("receiver", loggedInUser.getUsername());
-				message.userArgs.put("command", "GET_REGISTERED");
+				ACLMessage message = new ACLMessage();
+				message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType()));
+				message.userArgs.put("command", "GET_LOGGEDIN");
 				messageManager.post(message);
 			}
 		}
@@ -56,12 +58,16 @@ public class ChatRestBean implements ChatRest {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		
-		agentManager.startAgent(JNDILookup.UserAgentLookup, user.getUsername());
+		User currentUser = chatManager.findByUsername(user.getUsername());
+		
+		AID aid = new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent"));
+		
+		agentManager.startAgent(JNDILookup.UserAgentLookup, aid);
 		for (User loggedInUser : chatManager.loggedInUsers()) {
-			if(loggedInUser.getHost().getAlias().equals(System.getProperty("jboss.node.name") + ":8080")) {		
-				AgentMessage message = new AgentMessage();
-				message.userArgs.put("receiver", loggedInUser.getUsername());
-				message.userArgs.put("command", "GET_LOGGEDIN");	
+			if(loggedInUser.getHost().getAlias().equals(System.getProperty("jboss.node.name") + ":8080")) {	
+				ACLMessage message = new ACLMessage();
+				message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent")));
+				message.userArgs.put("command", "GET_LOGGEDIN");
 				messageManager.post(message);
 			}
 		}
@@ -72,9 +78,11 @@ public class ChatRestBean implements ChatRest {
 	}
 
 	@Override
-	public void getloggedInUsers(String username) {
-		AgentMessage message = new AgentMessage();
-		message.userArgs.put("receiver", username);
+	public void getloggedInUsers(String username) {	
+		
+		User user = chatManager.findByUsername(username);
+		ACLMessage message = new ACLMessage();
+		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent")));
 		message.userArgs.put("command", "GET_LOGGEDIN");
 		
 		messageManager.post(message);
@@ -82,8 +90,11 @@ public class ChatRestBean implements ChatRest {
 	
 	@Override
 	public void getRegisteredUsers(String username) {
-		AgentMessage message = new AgentMessage();
-		message.userArgs.put("receiver", username);
+		
+		User user = chatManager.findByUsername(username);
+		ACLMessage message = new ACLMessage();
+		System.out.println(user.getHost().getAddress());
+		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent")));
 		message.userArgs.put("command", "GET_REGISTERED");
 		
 		messageManager.post(message);
@@ -96,12 +107,22 @@ public class ChatRestBean implements ChatRest {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		
-		agentManager.stopAgent(username);
+		AID aid = new AID();
+		
+		User user = chatManager.findByUsername(username);
+		
+		if (user != null) {
+			aid.setHost(user.getHost());		
+			aid.setName(username);
+			aid.setType(new AgentType("UserAgent"));
+		}
+		
+		agentManager.stopAgent(aid);
 		
 		for (User loggedInUser : chatManager.loggedInUsers()) {
 			
-			AgentMessage message = new AgentMessage();
-			message.userArgs.put("receiver", loggedInUser.getUsername());
+			ACLMessage message = new ACLMessage();
+			message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent")));
 			message.userArgs.put("command", "GET_LOGGEDIN");
 			
 			messageManager.post(message);

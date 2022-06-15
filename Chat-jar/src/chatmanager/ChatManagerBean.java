@@ -16,7 +16,7 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 import connnectionmanager.ConnectionManager;
-import models.Host;
+import models.AgentCenter;
 import models.User;
 
 // TODO Implement the rest of Client-Server functionalities 
@@ -82,7 +82,7 @@ public class ChatManagerBean implements ChatManagerRemote, ChatManagerLocal{
 		return false;
 	}
 	
-	private Host getUserHost() {
+	private AgentCenter getUserHost() {
 		String hostAlias = System.getProperty("jboss.node.name") + ":8080";
 		String hostAddress = "";
 		
@@ -94,7 +94,7 @@ public class ChatManagerBean implements ChatManagerRemote, ChatManagerLocal{
 			e.printStackTrace();
 		}	
 		
-		return new Host(hostAddress, hostAlias);
+		return new AgentCenter(hostAddress, hostAlias);
 	}
 
 	@Override

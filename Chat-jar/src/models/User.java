@@ -10,11 +10,11 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private Host host;
+	private AgentCenter host;
 	
 	public User() {}
 
-	public User(String username, String password, Host host) {
+	public User(String username, String password, AgentCenter host) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -37,11 +37,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public Host getHost() {
+	public AgentCenter getHost() {
 		return host;
 	}
 
-	public void setHost(Host host) {
+	public void setHost(AgentCenter host) {
 		this.host = host;
 	}
 
