@@ -50,7 +50,7 @@ public class AgentRestBean implements AgentRest{
 	}
 
 	@Override
-	public Response startServerAgent(String type, String name) {
+	public Response startAgent(String type, String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
