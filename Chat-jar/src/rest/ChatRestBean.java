@@ -58,17 +58,25 @@ public class ChatRestBean implements ChatRest {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		
-		User currentUser = chatManager.findByUsername(user.getUsername());
+		User currentUser = chatManager.findByUsername(user.getUsername());	
+		agentManager.startAgent(JNDILookup.UserAgentLookup, new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent")));
 		
-		AID aid = new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent"));
-		
-		agentManager.startAgent(JNDILookup.UserAgentLookup, aid);
 		for (User loggedInUser : chatManager.loggedInUsers()) {
+			
 			if(loggedInUser.getHost().getAlias().equals(System.getProperty("jboss.node.name") + ":8080")) {	
-				ACLMessage message = new ACLMessage();
-				message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent")));
-				message.userArgs.put("command", "GET_LOGGEDIN");
-				messageManager.post(message);
+				ACLMessage messageLoggedInUsers = new ACLMessage();
+				ACLMessage messageRunningAgents = new ACLMessage();
+				
+				AID aid = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent"));
+				
+				messageLoggedInUsers.receivers.add(aid);
+				messageRunningAgents.receivers.add(aid);
+				
+				messageLoggedInUsers.userArgs.put("command", "GET_LOGGEDIN");
+				messageRunningAgents.userArgs.put("command", "GET_RUNNING_AGENTS");
+				
+				messageManager.post(messageLoggedInUsers);
+				messageManager.post(messageRunningAgents);
 			}
 		}
 		return Response

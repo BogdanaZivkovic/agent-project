@@ -1,5 +1,7 @@
 package agentmanager;
 
+import java.util.Collection;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -37,5 +39,10 @@ public class AgentManagerBean implements AgentManagerRemote {
 	@Override
 	public void stopAgent(AID aid) {
 		cachedAgents.getRunningAgents().remove(aid);
+	}
+
+	@Override
+	public Collection<Agent> getRunningAgents() {
+		return cachedAgents.getRunningAgents().values();
 	}
 }

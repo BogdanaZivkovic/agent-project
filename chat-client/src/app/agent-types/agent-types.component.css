@@ -1,0 +1,56 @@
+.container-bg {
+    background-color: rgb(91, 120, 160);
+    width:100%;
+    min-height: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+  }
+
+  th {
+    color: rgb(210, 222, 247);
+  }
+
+  td {
+    background-color: #ffffff;
+    color: rgb(43, 62, 99);
+    border-radius: 20px;
+    padding: 5px;
+    text-align: center; 
+    vertical-align: middle;
+    box-shadow: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  table {
+    border-collapse:separate; 
+    border-spacing:10px;
+  }
+  
+  h2 {
+    color: white;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  .form-label {
+    color: white;
+    font-weight: 300;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  .form-control-class {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 20px;
+  }
+
+  .button-class {
+    border-radius: 20px;
+  }
+
+  .margin-class {
+    margin-top: 60px;
+    margin-bottom: auto;
+  }
+  
+
+

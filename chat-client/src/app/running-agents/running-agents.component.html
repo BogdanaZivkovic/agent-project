@@ -1,0 +1,25 @@
+<div class="container-fluid container-bg">
+    <div class="row justify-content-center">
+        <div class="col-md-10 margin-class">
+            <h2 style="text-align: center;">Running agents</h2>
+            <table matSort (matSortChange)="sortData($event)" class="table">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="name">Name</th>
+                        <th mat-sort-header="type">Type</th>
+                        <th mat-sort-header="hostAddress">Host address</th>
+                        <th mat-sort-header="hostAlias">Host alias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let agent of agentService.agents">
+                        <td>{{agent.name}}</td>
+                        <td>{{agent.type}}</td>
+                        <td>{{agent.hostAddress}}</td>
+                        <td>{{agent.hostAlias}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

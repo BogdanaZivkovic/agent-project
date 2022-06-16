@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Agent } from '../model/agent';
 import { Message } from '../model/message';
 import { User } from '../model/user';
+import { AgentService } from './agent.service';
 import { MessageService } from './message.service';
 
 const baseUrl = 'http://localhost:8080/Chat-war/api/users/';
@@ -18,14 +20,14 @@ export class UserService {
   registeredUsers: User[] = [];
   user: User = new User('', '');
 
-  constructor(private http : HttpClient, private router: Router, private messageService : MessageService) { }
+  constructor(private http : HttpClient, private router: Router, private messageService : MessageService, private agentService: AgentService) { }
 
   signIn(user : User ) {
     return this.http.post(baseUrl + "login", user).subscribe({
       next: (data) => {
         this.user = data as User;
         this.isSignedIn = true;
-        initSocket(this, this.router, this.messageService);
+        initSocket(this, this.router, this.messageService, this.agentService);
       },
       error: () => {alert("Error: Please enter correct username and password!")}
     })
@@ -56,7 +58,7 @@ export class UserService {
   }
 }
 
-function initSocket(userService: UserService, router: Router, messageService : MessageService) {
+function initSocket(userService: UserService, router: Router, messageService : MessageService, agentService : AgentService) {
   let connection: WebSocket|null = new WebSocket("ws://localhost:8080/Chat-war/ws/" + userService.user.username); 
 
   connection.onopen = function () {
@@ -89,6 +91,26 @@ function initSocket(userService: UserService, router: Router, messageService : M
         }
      });    
      userService.registeredUsers = users;   
+    }
+    else if(data[0] == "RUNNING_AGENTS") {
+      let agents: Agent[] = [];
+      data[1].split("|").forEach((agent: string) => {
+        if (agent) {
+          let agentData = agent.split(",");   
+          agents.push(new Agent(agentData[0], agentData[1], agentData[2], agentData[3]))
+        }
+     });    
+     agentService.agents = agents;   
+    }
+    else if(data[0] == "AGENT_TYPES") {
+      let agentTypes: String[] = [];;
+      data[1].split("|").forEach((agent: string) => {
+        if (agent) {
+          let agentData = agent.split(",");   
+          agentTypes.push(agentData[0])
+        }
+     });    
+     agentService.agentTypes = agentTypes;   
     }
     else if(data[0] == "MESSAGES") {
       let messages: Message[] = [];

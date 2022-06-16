@@ -13,6 +13,8 @@
           <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="message">Send message</a>
           <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="message-all">Send message to all</a>
           <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="messages">My messages</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="running-agents">Running agents</a>
+          <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="agent-types">Agent types</a>
           <a *ngIf="userService.isSignedIn" class="nav-link" routerLink="" (click)="signOut()">Sign out</a>
         </div>
       </div>

@@ -50,6 +50,8 @@ import { Interceptor } from './interceptor/interceptor';
 import { MessageComponent } from './message/message.component';
 import { MessageAllComponent } from './message-all/message-all.component';
 import { MessagesComponent } from './messages/messages.component';
+import { RunningAgentsComponent } from './running-agents/running-agents.component';
+import { AgentTypesComponent } from './agent-types/agent-types.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { MessagesComponent } from './messages/messages.component';
     SignedInUsersComponent,
     MessageComponent,
     MessageAllComponent,
-    MessagesComponent
+    MessagesComponent,
+    RunningAgentsComponent,
+    AgentTypesComponent
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,14 @@
 package agents;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
 
 import chatmanager.ChatManagerRemote;
 import messagemanager.ACLMessage;
@@ -78,6 +78,30 @@ public class AgentImpl implements Agent {
 					response += m.toString() + "|";
 				}
 				break;
+			case "GET_RUNNING_AGENTS":
+				response = "RUNNING_AGENTS!";
+				
+				Collection<Agent> agents = cachedAgents.getRunningAgents().values();
+				
+				for (Agent agent : agents) {
+					response += agent.toString() + "|";
+				}
+				break;
+			case "GET_AGENT_TYPES":
+				response = "AGENT_TYPES!";
+				
+				agents = cachedAgents.getRunningAgents().values();
+				
+				List<String> agentTypes = new ArrayList<>();
+				
+				for (Agent agent : agents) {
+					String agentTypeName = agent.getAid().getType().getName();
+					if(!agentTypes.contains(agentTypeName)) {
+						agentTypes.add(agentTypeName);
+						response += agentTypeName + "|";
+					}
+				}
+				break;
 			default:
 				response = "ERROR!Option: " + option + " does not exist.";
 				break;
@@ -97,5 +121,10 @@ public class AgentImpl implements Agent {
 	@Override
 	public AID getAid() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return id.getName() + "," + id.getType().getName() + "," + id.getHost().getAddress() + "," + id.getHost().getAlias();
 	}
 }
