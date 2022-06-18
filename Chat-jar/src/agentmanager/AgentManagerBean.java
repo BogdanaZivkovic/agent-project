@@ -47,8 +47,7 @@ public class AgentManagerBean implements AgentManagerRemote {
 
 	@Override
 	public void stopAgent(AID aid) {
-		cachedAgents.getRunningAgents().remove(aid);
-		cachedAgents.getRemoteRunningAgentsAIDS().remove(aid);
+		cachedAgents.removeAgent(aid);
 		connectionManager.agentRunningNofityNodes();
 	}
 

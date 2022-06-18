@@ -14,4 +14,6 @@ public interface CachedAgentsRemote {
 	public Agent getByAID(AID aid);
 	
 	public void setRemoteRunningAgents(List<AID> agents);
+	
+	public void removeAgent(AID aid);
 }

@@ -69,4 +69,10 @@ public class CachedAgents implements CachedAgentsRemote{
 	public List<AID> getRemoteRunningAgentsAIDS() {
 		return runningAgentsAIDS;
 	}
+
+	@Override
+	public void removeAgent(AID aid) {
+		runningAgentsAIDS.remove(aid);
+		runningAgents.remove(aid);
+	}
 }
