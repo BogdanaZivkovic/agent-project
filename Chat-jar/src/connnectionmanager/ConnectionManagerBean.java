@@ -266,7 +266,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 			
 			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 			message.userArgs.put("command", "GET_LOGGEDIN");
 			
 			messageManager.post(message);
@@ -283,7 +283,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 						
 			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 			message.userArgs.put("command", "GET_REGISTERED");
 
 			messageManager.post(message);
@@ -318,7 +318,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 				continue;
 			}
 						
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 		}
 		
 		messageManager.post(message);
