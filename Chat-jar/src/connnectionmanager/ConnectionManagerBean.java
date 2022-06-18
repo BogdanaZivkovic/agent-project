@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,7 +30,9 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import agentmanager.AgentManagerRemote;
 import agents.AID;
+import agents.Agent;
 import chatmanager.ChatManagerRemote;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
@@ -49,9 +52,14 @@ public class ConnectionManagerBean implements ConnectionManager{
 	private AgentCenter localNode = new AgentCenter();
 	private List<String> connectedNodes = new ArrayList<String>();
 	
-	@EJB ChatManagerRemote chatManager;
+	@EJB 
+	private ChatManagerRemote chatManager;
 	
-	@EJB MessageManagerRemote messageManager;
+	@EJB 
+	private MessageManagerRemote messageManager;
+	
+	@EJB 
+	private AgentManagerRemote agentManager;
 	
 	@EJB WSChat ws;
 	
@@ -280,5 +288,39 @@ public class ConnectionManagerBean implements ConnectionManager{
 
 			messageManager.post(message);
 		}
+	}
+
+	@Override
+	public void agentRunningNofityNodes() {
+		for (String cn: connectedNodes) {
+			ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
+			ResteasyWebTarget rtarget = resteasyClient.target("http://" + cn + "/Chat-war/api/connection");
+			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
+			
+			HashMap<AID, Agent> agents = agentManager.getRunningAgentsHashMap();
+
+			rest.runningAgentsForNodes(agents);
+			
+			resteasyClient.close();
+		}		
+	}
+
+
+	@Override
+	public void runningAgentsForNodes(HashMap<AID, Agent> agents) {
+		agentManager.setRunningAgents(agents);
+		
+		ACLMessage message = new ACLMessage();
+		message.userArgs.put("command", "GET_RUNNING_AGENTS");
+		
+		for(User user : chatManager.loggedInUsers()) {
+			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
+				continue;
+			}
+						
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+		}
+		
+		messageManager.post(message);
 	}
 }

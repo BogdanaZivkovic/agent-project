@@ -1,6 +1,7 @@
 package agentmanager;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -11,6 +12,7 @@ import javax.naming.NamingException;
 import agents.AID;
 import agents.Agent;
 import agents.CachedAgentsRemote;
+import connnectionmanager.ConnectionManager;
 import models.AgentType;
 import util.JNDILookup;
 import util.JndiTreeParser;
@@ -21,6 +23,8 @@ public class AgentManagerBean implements AgentManagerRemote {
 	
 	@EJB
 	private CachedAgentsRemote cachedAgents;
+	@EJB 
+	private ConnectionManager connectionManager;
 	@EJB
 	private JndiTreeParser jndiTreeParser;
 	
@@ -31,7 +35,9 @@ public class AgentManagerBean implements AgentManagerRemote {
 	@Override
 	public AID startAgent(String name, AID aid) {
 		Agent agent = (Agent) JNDILookup.lookUp(name, Agent.class);
-		return agent.init(aid);
+		aid = agent.init(aid);
+		connectionManager.agentRunningNofityNodes();
+		return aid;
 	}
 
 	@Override
@@ -42,11 +48,17 @@ public class AgentManagerBean implements AgentManagerRemote {
 	@Override
 	public void stopAgent(AID aid) {
 		cachedAgents.getRunningAgents().remove(aid);
+		connectionManager.agentRunningNofityNodes();
 	}
 
 	@Override
 	public Collection<Agent> getRunningAgents() {
 		return cachedAgents.getRunningAgents().values();
+	}
+	
+	@Override
+	public HashMap<AID, Agent> getRunningAgentsHashMap() {
+		return cachedAgents.getRunningAgents();
 	}
 	
 	@Override
@@ -56,5 +68,10 @@ public class AgentManagerBean implements AgentManagerRemote {
 		} catch (NamingException ex) {
 			throw new IllegalStateException(ex);
 		}
+	}
+
+	@Override
+	public void setRunningAgents(HashMap<AID, Agent> agents) {
+		cachedAgents.setRunningAgents(agents);
 	}
 }

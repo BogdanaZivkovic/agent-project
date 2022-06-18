@@ -1,10 +1,18 @@
 package agents;
 
+import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 
 @Singleton
 @LocalBean
@@ -25,6 +33,9 @@ public class CachedAgents implements CachedAgentsRemote{
 	@Override
 	public void addRunningAgent(AID key, Agent agent) {
 		runningAgents.put(key, agent);
+		
+		String alias = System.getProperty("jboss.node.name") + ":8080";
+		String address = getNodeAddress();
 	}
 	
 	@Override
@@ -53,5 +64,22 @@ public class CachedAgents implements CachedAgentsRemote{
 			}
 		}
 		return null;
+	}
+	
+	private String getNodeAddress() {
+		try {
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			ObjectName http = new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http");
+			return (String) mBeanServer.getAttribute(http, "boundAddress");
+		} catch (MalformedObjectNameException | InstanceNotFoundException | AttributeNotFoundException | ReflectionException | MBeanException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+	@Override
+	public void setRunningAgents(HashMap<AID, Agent> agents) {
+		runningAgents = agents;	
 	}
 }

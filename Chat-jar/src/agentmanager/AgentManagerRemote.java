@@ -1,6 +1,7 @@
 package agentmanager;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -20,5 +21,10 @@ public interface AgentManagerRemote {
 	
 	public Collection<Agent> getRunningAgents();
 	
+	public HashMap<AID, Agent> getRunningAgentsHashMap();
+	
 	public List<AgentType> getAvailableAgentTypes();
+
+	public void setRunningAgents(HashMap<AID, Agent> agents);
+	
 }

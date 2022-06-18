@@ -23,7 +23,6 @@ import messagemanager.MessageManagerRemote;
 import models.AgentCenter;
 import models.AgentType;
 import models.User;
-import util.JNDILookup;
 
 @Stateless
 @Path("/agents")

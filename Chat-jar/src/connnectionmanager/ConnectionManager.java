@@ -1,6 +1,6 @@
 package connnectionmanager;
 
-
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -12,6 +12,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import agents.AID;
+import agents.Agent;
 import models.User;
 
 public interface ConnectionManager {
@@ -56,6 +58,12 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void registerNotifyNodes();
+	
+	@POST
+	@Path("/node/startAgent")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void agentRunningNofityNodes();
 
 	@POST
 	@Path("/users/loggedIn")
@@ -68,4 +76,10 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void registeredForNodes(List<User> users);
+	
+	@POST
+	@Path("/users/runningAgents")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void runningAgentsForNodes(HashMap<AID, Agent> agents);
 }
