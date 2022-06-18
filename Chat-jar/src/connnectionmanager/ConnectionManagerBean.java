@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,7 +31,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agentmanager.AgentManagerRemote;
 import agents.AID;
-import agents.Agent;
 import chatmanager.ChatManagerRemote;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;

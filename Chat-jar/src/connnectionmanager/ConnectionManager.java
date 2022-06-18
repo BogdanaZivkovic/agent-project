@@ -1,6 +1,5 @@
 package connnectionmanager;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -13,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agents.AID;
-import agents.Agent;
 import models.User;
 
 public interface ConnectionManager {
