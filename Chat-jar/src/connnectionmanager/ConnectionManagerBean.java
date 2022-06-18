@@ -138,7 +138,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 	@Override
 	public void removeAgent(String nodeAlias) {
 		List<AID> aids = agentManager.getRemoteRunningAgents();
-		for(AID aid: aids) {
+		for(AID aid : aids) {
 			if(aid.getHost().getAlias().equals(nodeAlias)) {
 				agentManager.stopAgent(aid);
 			}
