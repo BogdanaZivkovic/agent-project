@@ -88,9 +88,9 @@ public class UserAgent implements Agent {
 			case "GET_RUNNING_AGENTS":
 				response = "RUNNING_AGENTS!";
 				
-				Collection<Agent> agents = cachedAgents.getRunningAgents().values();
+				List<AID> agents = cachedAgents.getRemoteRunningAgentsAIDS();
 				
-				for (Agent agent : agents) {
+				for (AID agent : agents) {
 					response += agent.toString() + "|";
 				}
 				break;

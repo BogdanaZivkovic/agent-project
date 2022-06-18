@@ -48,4 +48,10 @@ public class AID implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	@Override
+	public String toString() {
+		return name + "," + type.getName() + "," + host.getAddress() + "," + host.getAlias();
+	}
+	
 }
