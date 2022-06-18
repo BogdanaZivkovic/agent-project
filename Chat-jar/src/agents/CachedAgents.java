@@ -1,7 +1,9 @@
 package agents;
 
 import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
@@ -20,9 +22,11 @@ import javax.management.ReflectionException;
 public class CachedAgents implements CachedAgentsRemote{
 
 	HashMap<AID, Agent> runningAgents;
+	List<AID> runningAgentsAIDS;
 
 	public CachedAgents() {
 		runningAgents = new HashMap<>();
+		runningAgentsAIDS = new ArrayList<>();
 	}
 
 	@Override
@@ -33,9 +37,7 @@ public class CachedAgents implements CachedAgentsRemote{
 	@Override
 	public void addRunningAgent(AID key, Agent agent) {
 		runningAgents.put(key, agent);
-		
-		String alias = System.getProperty("jboss.node.name") + ":8080";
-		String address = getNodeAddress();
+		runningAgentsAIDS.add(key);
 	}
 	
 	@Override
@@ -79,7 +81,12 @@ public class CachedAgents implements CachedAgentsRemote{
 	}
 
 	@Override
-	public void setRunningAgents(HashMap<AID, Agent> agents) {
-		runningAgents = agents;	
+	public void setRemoteRunningAgents(List<AID> aids) {
+		runningAgentsAIDS = aids;
+	}
+
+	@Override
+	public List<AID> getRemoteRunningAgentsAIDS() {
+		return runningAgentsAIDS;
 	}
 }

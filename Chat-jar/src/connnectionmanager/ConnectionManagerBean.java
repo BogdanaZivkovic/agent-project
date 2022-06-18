@@ -297,7 +297,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			ResteasyWebTarget rtarget = resteasyClient.target("http://" + cn + "/Chat-war/api/connection");
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			
-			HashMap<AID, Agent> agents = agentManager.getRunningAgentsHashMap();
+			List<AID> agents = agentManager.getRemoteRunningAgents();
 
 			rest.runningAgentsForNodes(agents);
 			
@@ -307,8 +307,8 @@ public class ConnectionManagerBean implements ConnectionManager{
 
 
 	@Override
-	public void runningAgentsForNodes(HashMap<AID, Agent> agents) {
-		agentManager.setRunningAgents(agents);
+	public void runningAgentsForNodes(List<AID> agents) {
+		agentManager.setRemoteRunningAgents(agents);
 		
 		ACLMessage message = new ACLMessage();
 		message.userArgs.put("command", "GET_RUNNING_AGENTS");

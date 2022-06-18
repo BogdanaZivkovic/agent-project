@@ -78,8 +78,8 @@ public interface ConnectionManager {
 	public void registeredForNodes(List<User> users);
 	
 	@POST
-	@Path("/users/runningAgents")
+	@Path("/agents/runningAgents")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void runningAgentsForNodes(HashMap<AID, Agent> agents);
+	public void runningAgentsForNodes(List<AID> agents);
 }

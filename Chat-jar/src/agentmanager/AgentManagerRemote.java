@@ -23,8 +23,12 @@ public interface AgentManagerRemote {
 	
 	public HashMap<AID, Agent> getRunningAgentsHashMap();
 	
+	public List<AID> getRemoteRunningAgents();
+	
 	public List<AgentType> getAvailableAgentTypes();
 
-	public void setRunningAgents(HashMap<AID, Agent> agents);
+	public void setRemoteRunningAgents(List<AID> agents);
+	
+	
 	
 }
