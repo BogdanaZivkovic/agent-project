@@ -122,7 +122,27 @@ public class ConnectionManagerBean implements ConnectionManager{
 	@Override
 	public void deleteNode(String nodeAlias) {
 		System.out.println("Deleted node: " + nodeAlias);		
-		connectedNodes.remove(nodeAlias);		
+		connectedNodes.remove(nodeAlias);	
+	}
+	
+	@Override
+	public void removeLoggedInUser(String nodeAlias) {
+		List<User> users = chatManager.loggedInUsers();
+		for(User user: users) {
+			if(user.getHost().getAlias().equals(nodeAlias)) {
+				chatManager.logout(user.getUsername());
+			}
+		}
+	}
+	
+	@Override
+	public void removeAgent(String nodeAlias) {
+		List<AID> aids = agentManager.getRemoteRunningAgents();
+		for(AID aid: aids) {
+			if(aid.getHost().getAlias().equals(nodeAlias)) {
+				agentManager.stopAgent(aid);
+			}
+		}
 	}
 	
 	@Override
@@ -171,9 +191,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 			ResteasyClient client = new ResteasyClientBuilder().build();
 			ResteasyWebTarget rtarget = client.target("http://" + cn + "/Chat-war/api/connection");
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
-			rest.deleteNode(localNode.getAlias());
-			rest.loggedInForNodes(chatManager.loggedInUsers());	
-			
+			rest.deleteNode(alias);
+			rest.removeLoggedInUser(alias);
+			rest.removeAgent(alias);
 			client.close();	
 		}
 	}

@@ -35,6 +35,14 @@ public interface ConnectionManager {
 	@Path("/node/{alias}")
 	public void deleteNode(@PathParam("alias") String nodeAlias);
 	
+	@DELETE
+	@Path("/user/{alias}")
+	public void removeLoggedInUser(@PathParam("alias") String nodeAlias);
+	
+	@DELETE
+	@Path("/agent/{alias}")
+	public void removeAgent(@PathParam("alias") String nodeAlias);
+	
 	@GET
 	@Path("/node")
 	@Produces(MediaType.TEXT_PLAIN)
