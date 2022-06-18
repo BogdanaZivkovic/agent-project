@@ -1,0 +1,19 @@
+<div class="container-fluid container-bg">
+    <div class="row justify-content-center">
+        <div class="col-md-10 margin-class">
+            <h2 style="text-align: center;">Performatives</h2>
+            <table matSort (matSortChange)="sortData($event)" class="table">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="performative">Performative</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let performative of agentService.performatives">
+                        <td>{{performative}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -112,6 +112,16 @@ function initSocket(userService: UserService, router: Router, messageService : M
      });    
      agentService.agentTypes = agentTypes;   
     }
+    else if(data[0] == "PERFORMATIVES") {
+      let performatives: String[] = [];;
+      data[1].split("|").forEach((performative: string) => {
+        if (performative) {
+          let performativeData = performative.split(",");   
+          performatives.push(performativeData[0])
+        }
+     });    
+     agentService.performatives = performatives;   
+    }
     else if(data[0] == "MESSAGES") {
       let messages: Message[] = [];
       data[1].split("|").forEach((message: string) => {

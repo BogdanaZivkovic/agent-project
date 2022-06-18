@@ -10,16 +10,19 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
+import agentmanager.AgentManagerRemote;
 import chatmanager.ChatManagerRemote;
 import messagemanager.ACLMessage;
+import messagemanager.MessageManagerRemote;
 import messagesrepo.MessagesRepoRemote;
 import models.AgentCenter;
+import models.AgentType;
 import models.User;
 import ws.WSChat;
 
 @Stateful
 @Remote(Agent.class)
-public class AgentImpl implements Agent {
+public class UserAgent implements Agent {
 
 	private static final long serialVersionUID = 1L;
 	private AID id;
@@ -28,6 +31,10 @@ public class AgentImpl implements Agent {
 	private CachedAgentsRemote cachedAgents;
 	@EJB
 	private ChatManagerRemote chatManager;
+	@EJB
+	private AgentManagerRemote agentManager;
+	@EJB
+	private MessageManagerRemote messageManager;
 	@EJB
 	private MessagesRepoRemote messagesRepo;
 	@EJB
@@ -90,16 +97,24 @@ public class AgentImpl implements Agent {
 			case "GET_AGENT_TYPES":
 				response = "AGENT_TYPES!";
 				
-				agents = cachedAgents.getRunningAgents().values();
+				List<AgentType> agentTypes = agentManager.getAvailableAgentTypes();
+				List<String> agentTypeNames = new ArrayList<>();
 				
-				List<String> agentTypes = new ArrayList<>();
-				
-				for (Agent agent : agents) {
-					String agentTypeName = agent.getAid().getType().getName();
-					if(!agentTypes.contains(agentTypeName)) {
-						agentTypes.add(agentTypeName);
+				for (AgentType agentType : agentTypes) {
+					String agentTypeName = agentType.getName();
+					if(!agentTypeNames.contains(agentTypeName)) {
+						agentTypeNames.add(agentTypeName);
 						response += agentTypeName + "|";
 					}
+				}
+				break;
+			case "GET_PERFORMATIVES":
+				response = "PERFORMATIVES!";
+				
+				List<String> performatives = messageManager.getPerformatives();
+				
+				for (String performative : performatives) {
+					response += performative + "|";
 				}
 				break;
 			default:

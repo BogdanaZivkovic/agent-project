@@ -11,6 +11,7 @@ export class AgentService {
 
   agents: Agent[] = [];
   agentTypes: String [] = [];
+  performatives: String [] = [];
 
   constructor(private http : HttpClient) {}
 
@@ -20,5 +21,9 @@ export class AgentService {
 
   getAgentTypes() {
     return this.http.get(baseUrl + "classes").subscribe();
+  }
+
+  getPerformatives() {
+    return this.http.get(baseUrl + "messages").subscribe();
   }
 }

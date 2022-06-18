@@ -1,10 +1,13 @@
 package agentmanager;
 
 import java.util.Collection;
+import java.util.List;
+
 import javax.ejb.Remote;
 
 import agents.AID;
 import agents.Agent;
+import models.AgentType;
 
 @Remote
 public interface AgentManagerRemote {
@@ -16,4 +19,6 @@ public interface AgentManagerRemote {
 	public Agent getAgentById(AID aid);
 	
 	public Collection<Agent> getRunningAgents();
+	
+	public List<AgentType> getAvailableAgentTypes();
 }

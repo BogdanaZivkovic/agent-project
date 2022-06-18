@@ -1,4 +1,4 @@
-package rest;
+	package rest;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import agentmanager.AgentManagerRemote;
 import agents.AID;
+import agents.Agent;
 import chatmanager.ChatManagerRemote;
 import connnectionmanager.ConnectionManager;
 import messagemanager.ACLMessage;
@@ -59,7 +60,9 @@ public class ChatRestBean implements ChatRest {
 		}
 		
 		User currentUser = chatManager.findByUsername(user.getUsername());	
-		agentManager.startAgent(JNDILookup.UserAgentLookup, new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent")));
+		
+		String agentName = "ejb:Chat-ear/Chat-jar//" + "UserAgent" + "!" + Agent.class.getName() + "?stateful";
+		agentManager.startAgent(agentName, new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent")));
 		
 		for (User loggedInUser : chatManager.loggedInUsers()) {
 			

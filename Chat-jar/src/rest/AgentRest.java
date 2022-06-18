@@ -21,7 +21,7 @@ public interface AgentRest {
 	@GET
 	@Path("/classes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void getAvailableAgentClasses(@HeaderParam("Authorization") String username);
+	public void getAvailableAgentTypes(@HeaderParam("Authorization") String username);
 
 	@GET
 	@Path("/running")

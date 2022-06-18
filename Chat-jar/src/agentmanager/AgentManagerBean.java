@@ -1,25 +1,28 @@
 package agentmanager;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.naming.NamingException;
 
 import agents.AID;
 import agents.Agent;
 import agents.CachedAgentsRemote;
+import models.AgentType;
 import util.JNDILookup;
+import util.JndiTreeParser;
 
-/**
- * Session Bean implementation class AgentManagerBean
- */
 @Stateless
 @LocalBean
 public class AgentManagerBean implements AgentManagerRemote {
 	
 	@EJB
 	private CachedAgentsRemote cachedAgents;
+	@EJB
+	private JndiTreeParser jndiTreeParser;
 	
     public AgentManagerBean() {
         
@@ -44,5 +47,14 @@ public class AgentManagerBean implements AgentManagerRemote {
 	@Override
 	public Collection<Agent> getRunningAgents() {
 		return cachedAgents.getRunningAgents().values();
+	}
+	
+	@Override
+	public List<AgentType> getAvailableAgentTypes() {
+		try {
+			return jndiTreeParser.parse();
+		} catch (NamingException ex) {
+			throw new IllegalStateException(ex);
+		}
 	}
 }
