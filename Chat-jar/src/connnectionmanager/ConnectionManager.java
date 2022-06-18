@@ -31,11 +31,6 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<String> getNodes();
 	
-	@POST
-	@Path("/users/loggedIn")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> getUsers();
-	
 	@DELETE
 	@Path("/node/{alias}")
 	public void deleteNode(@PathParam("alias") String nodeAlias);

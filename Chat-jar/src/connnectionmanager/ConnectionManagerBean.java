@@ -139,8 +139,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 		} catch (MalformedObjectNameException | InstanceNotFoundException | AttributeNotFoundException | ReflectionException | MBeanException e) {
 			e.printStackTrace();
 			return null;
-		}
-		
+		}	
 	}
 	
 	private String getMaster() {
@@ -157,17 +156,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 		}
 	}
 
-
 	@Override
 	public List<String> getNodes() {
 		return connectedNodes;
-	}
-
-
-	@Override
-	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@PreDestroy
@@ -181,6 +172,8 @@ public class ConnectionManagerBean implements ConnectionManager{
 			ResteasyWebTarget rtarget = client.target("http://" + cn + "/Chat-war/api/connection");
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			rest.deleteNode(localNode.getAlias());
+			rest.loggedInForNodes(chatManager.loggedInUsers());	
+			
 			client.close();	
 		}
 	}
@@ -258,17 +251,15 @@ public class ConnectionManagerBean implements ConnectionManager{
 	@Override
 	public void loggedInForNodes(List<User> users) {
 		chatManager.setLoggedIn(users);
+		ACLMessage message = new ACLMessage();
+		message.userArgs.put("command", "GET_LOGGEDIN");
 		for(User user : chatManager.loggedInUsers()) {
 			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
 				continue;
 			}
-			
-			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
-			message.userArgs.put("command", "GET_LOGGEDIN");
-			
-			messageManager.post(message);
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));				
 		}
+		messageManager.post(message);
 	}
 
 
