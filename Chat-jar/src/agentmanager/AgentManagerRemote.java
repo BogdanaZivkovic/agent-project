@@ -29,6 +29,6 @@ public interface AgentManagerRemote {
 
 	public void setRemoteRunningAgents(List<AID> agents);
 	
-	
+	public void setRunningAgents(HashMap<AID, Agent> agents);
 	
 }

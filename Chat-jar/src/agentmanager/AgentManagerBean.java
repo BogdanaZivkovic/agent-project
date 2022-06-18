@@ -79,4 +79,9 @@ public class AgentManagerBean implements AgentManagerRemote {
 	public List<AID> getRemoteRunningAgents() {
 		return cachedAgents.getRemoteRunningAgentsAIDS();
 	}
+
+	@Override
+	public void setRunningAgents(HashMap<AID, Agent> agents) {
+		cachedAgents.setRunningAgents(agents);
+	}
 }

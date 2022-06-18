@@ -266,7 +266,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 			
 			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 			message.userArgs.put("command", "GET_LOGGEDIN");
 			
 			messageManager.post(message);
@@ -283,7 +283,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 						
 			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 			message.userArgs.put("command", "GET_REGISTERED");
 
 			messageManager.post(message);
@@ -297,8 +297,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 			ResteasyWebTarget rtarget = resteasyClient.target("http://" + cn + "/Chat-war/api/connection");
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			
-			List<AID> agents = agentManager.getRemoteRunningAgents();
-
+			//List<AID> agents = agentManager.getRemoteRunningAgents();
+			HashMap<AID, Agent> agents = agentManager.getRunningAgentsHashMap();
+			
 			rest.runningAgentsForNodes(agents);
 			
 			resteasyClient.close();
@@ -307,8 +308,10 @@ public class ConnectionManagerBean implements ConnectionManager{
 
 
 	@Override
-	public void runningAgentsForNodes(List<AID> agents) {
-		agentManager.setRemoteRunningAgents(agents);
+	public void runningAgentsForNodes(HashMap<AID, Agent> agents) {
+		//agentManager.setRemoteRunningAgents(agents);
+		
+		agentManager.setRunningAgents(agents);
 		
 		ACLMessage message = new ACLMessage();
 		message.userArgs.put("command", "GET_RUNNING_AGENTS");
@@ -318,7 +321,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 				continue;
 			}
 						
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType()));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
 		}
 		
 		messageManager.post(message);

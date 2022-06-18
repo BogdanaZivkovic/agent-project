@@ -81,5 +81,5 @@ public interface ConnectionManager {
 	@Path("/agents/runningAgents")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void runningAgentsForNodes(List<AID> agents);
+	public void runningAgentsForNodes(HashMap<AID, Agent> agents);
 }

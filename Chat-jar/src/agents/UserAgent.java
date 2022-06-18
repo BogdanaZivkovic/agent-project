@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -88,9 +89,10 @@ public class UserAgent implements Agent {
 			case "GET_RUNNING_AGENTS":
 				response = "RUNNING_AGENTS!";
 				
-				List<AID> agents = cachedAgents.getRemoteRunningAgentsAIDS();
+				Set<AID> agents = cachedAgents.getRunningAgents().keySet();
 				
 				for (AID agent : agents) {
+					System.out.println(agent.getName());
 					response += agent.toString() + "|";
 				}
 				break;
