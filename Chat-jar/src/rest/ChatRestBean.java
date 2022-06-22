@@ -113,13 +113,13 @@ public class ChatRestBean implements ChatRest {
 	@Override
 	public Response logout(String username) {
 		
+		User user = chatManager.findByUsername(username);
+		
 		if(!chatManager.logout(username)) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		
 		AID aid = new AID();
-		
-		User user = chatManager.findByUsername(username);
 		
 		if (user != null) {
 			aid.setHost(user.getHost());		
