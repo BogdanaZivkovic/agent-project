@@ -137,4 +137,16 @@ public class CachedAgents implements CachedAgentsRemote{
 			}
 		}*/
 	}
+
+	@Override
+	public void removeAgentTypes(String nodeAlias) {
+		List<AgentType> leftAgentTypes = new ArrayList<>();
+		for(AgentType agentType: agentTypes) {
+			if(!agentType.getHostAlias().equals(nodeAlias)) {
+				leftAgentTypes.add(agentType);
+			}
+		}
+		
+		agentTypes = leftAgentTypes;
+	}
 }

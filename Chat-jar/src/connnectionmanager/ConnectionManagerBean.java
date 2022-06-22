@@ -112,7 +112,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 				agentManager.addAgentTypes(agentTypes);
 				//rest.agentTypesForNodes(agentManager.getAvailableAgentTypes());
 				resteasyClient.close();
-				agentTypesNofityNodes();
+				agentTypesNofityNodes();		
+				agentTypesForNodes(agentManager.getAvailableAgentTypes());
+				
 			}
 		}).start();
 		
@@ -153,12 +155,8 @@ public class ConnectionManagerBean implements ConnectionManager{
 	
 	@Override
 	public void removeAgentType(String nodeAlias) {
-		List<AgentType> agentTypes = agentManager.getAvailableAgentTypes();
-		for(AgentType agentType : agentTypes) {
-			if(agentType.getHostAlias().equals(nodeAlias)) {
-				agentManager.removeAgentType(agentType);
-			}
-		}
+		agentManager.removeAgentTypes(nodeAlias);
+		agentTypesForNodes(agentManager.getAvailableAgentTypes());
 	}
 	
 	@Override

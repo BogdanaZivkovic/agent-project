@@ -37,4 +37,6 @@ public interface AgentManagerRemote {
 
 	public void removeAgentType(AgentType agentType);
 
+	public void removeAgentTypes(String nodeAlias);
+
 }

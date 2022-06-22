@@ -28,4 +28,6 @@ public interface CachedAgentsRemote {
 	void addAgentTypes(List<AgentType> agentTypes);
 
 	public void removeAgentType(AgentType agentType);
+
+	public void removeAgentTypes(String nodeAlias);
 }
