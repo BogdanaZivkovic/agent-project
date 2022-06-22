@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.naming.NamingException;
 
 import agents.AID;
 import agents.Agent;
@@ -15,7 +14,6 @@ import agents.CachedAgentsRemote;
 import connnectionmanager.ConnectionManager;
 import models.AgentType;
 import util.JNDILookup;
-import util.JndiTreeParser;
 
 @Stateless
 @LocalBean
@@ -25,8 +23,6 @@ public class AgentManagerBean implements AgentManagerRemote {
 	private CachedAgentsRemote cachedAgents;
 	@EJB 
 	private ConnectionManager connectionManager;
-	@EJB
-	private JndiTreeParser jndiTreeParser;
 	
     public AgentManagerBean() {
         
@@ -62,12 +58,8 @@ public class AgentManagerBean implements AgentManagerRemote {
 	}
 	
 	@Override
-	public List<AgentType> getAvailableAgentTypes() {
-		try {
-			return jndiTreeParser.parse();
-		} catch (NamingException ex) {
-			throw new IllegalStateException(ex);
-		}
+	public void addAgentType(AgentType agentType) {
+		cachedAgents.addAgentType(agentType);
 	}
 
 	@Override
@@ -78,5 +70,15 @@ public class AgentManagerBean implements AgentManagerRemote {
 	@Override
 	public List<AID> getRemoteRunningAgents() {
 		return cachedAgents.getRemoteRunningAgentsAIDS();
+	}
+
+	@Override
+	public List<AgentType> getAvailableAgentTypes() {
+		return cachedAgents.getAgentTypes();
+	}
+
+	@Override
+	public void setAgentTypes(List<AgentType> agentTypes) {
+		cachedAgents.setAgentTypes(agentTypes);
 	}
 }

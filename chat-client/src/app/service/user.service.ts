@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Agent } from '../model/agent';
+import { AgentType } from '../model/agentType';
 import { Message } from '../model/message';
 import { User } from '../model/user';
 import { AgentService } from './agent.service';
@@ -103,11 +104,11 @@ function initSocket(userService: UserService, router: Router, messageService : M
      agentService.agents = agents;   
     }
     else if(data[0] == "AGENT_TYPES") {
-      let agentTypes: String[] = [];;
+      let agentTypes: AgentType[] = [];
       data[1].split("|").forEach((agent: string) => {
         if (agent) {
           let agentData = agent.split(",");   
-          agentTypes.push(agentData[0])
+          agentTypes.push(new AgentType(agentData[0], agentData[1]))
         }
      });    
      agentService.agentTypes = agentTypes;   

@@ -7,12 +7,14 @@ public class AgentType implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
+	private String hostAlias;
 	
 	public AgentType() {}
 
-	public AgentType(String name) {
+	public AgentType(String name, String hostAlias) {
 		super();
 		this.name = name;
+		this.hostAlias = hostAlias;
 	}
 
 	public String getName() {
@@ -21,6 +23,14 @@ public class AgentType implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getHostAlias() {
+		return hostAlias;
+	}
+
+	public void setHostAlias(String hostAlias) {
+		this.hostAlias = hostAlias;
 	}
 
 	public static long getSerialversionuid() {

@@ -28,7 +28,9 @@ public interface AgentManagerRemote {
 	public List<AgentType> getAvailableAgentTypes();
 
 	public void setRemoteRunningAgents(List<AID> agents);
-	
-	
-	
+
+	void addAgentType(AgentType agentType);
+
+	public void setAgentTypes(List<AgentType> agentTypes);
+
 }

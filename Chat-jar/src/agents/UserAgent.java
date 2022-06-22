@@ -100,10 +100,10 @@ public class UserAgent implements Agent {
 				List<String> agentTypeNames = new ArrayList<>();
 				
 				for (AgentType agentType : agentTypes) {
-					String agentTypeName = agentType.getName();
-					if(!agentTypeNames.contains(agentTypeName)) {
-						agentTypeNames.add(agentTypeName);
-						response += agentTypeName + "|";
+					String agentTypeNameAndHost = agentType.getName() + "," + agentType.getHostAlias();
+					if(!agentTypeNames.contains(agentTypeNameAndHost)) {
+						agentTypeNames.add(agentTypeNameAndHost);
+						response += agentTypeNameAndHost + "|";
 					}
 				}
 				break;

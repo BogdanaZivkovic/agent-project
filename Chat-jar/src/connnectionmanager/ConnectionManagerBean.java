@@ -96,6 +96,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			rest.addNode(nodeAlias);
 		}
+		
 		connectedNodes.add(nodeAlias);
 		
 		new Thread(new Runnable() {
@@ -106,6 +107,8 @@ public class ConnectionManagerBean implements ConnectionManager{
 				ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 				rest.loggedInForNodes(chatManager.loggedInUsers());
 				rest.registeredForNodes(chatManager.registeredUsers());
+				rest.runningAgentsForNodes(agentManager.getRemoteRunningAgents());
+				//get agent types from new node
 				resteasyClient.close();
 			}
 		}).start();
@@ -277,7 +280,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
 				continue;
 			}
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));				
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));				
 		}
 		messageManager.post(message);
 	}
@@ -292,7 +295,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 						
 			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
 			message.userArgs.put("command", "GET_REGISTERED");
 
 			messageManager.post(message);
@@ -314,7 +317,6 @@ public class ConnectionManagerBean implements ConnectionManager{
 		}		
 	}
 
-
 	@Override
 	public void runningAgentsForNodes(List<AID> agents) {
 		agentManager.setRemoteRunningAgents(agents);
@@ -327,9 +329,43 @@ public class ConnectionManagerBean implements ConnectionManager{
 				continue;
 			}
 						
-			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent")));
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
 		}
 		
 		messageManager.post(message);
 	}
+
+	@Override
+	public void agentTypesNofityNodes() {
+		for (String cn: connectedNodes) {
+			ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
+			ResteasyWebTarget rtarget = resteasyClient.target("http://" + cn + "/Chat-war/api/connection");
+			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
+			
+			List<AgentType> agentTypes = agentManager.getAvailableAgentTypes();
+
+			rest.agentTypesForNodes(agentTypes);
+			
+			resteasyClient.close();
+		}	
+	}
+
+	@Override
+	public void agentTypesForNodes(List<AgentType> agentTypes) {
+		agentManager.setAgentTypes(agentTypes);
+		
+		ACLMessage message = new ACLMessage();
+		message.userArgs.put("command", "GET_AGENT_TYPES");
+		
+		for(User user : chatManager.loggedInUsers()) {
+			if(!user.getHost().getAlias().equals(localNode.getAlias())) {
+				continue;
+			}
+						
+			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
+		}
+		
+		messageManager.post(message);
+	}
+
 }

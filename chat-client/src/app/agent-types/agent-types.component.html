@@ -6,11 +6,13 @@
                 <thead>
                     <tr>
                         <th mat-sort-header="type">Type</th>
+                        <th mat-sort-header="hostAlias">Host alias</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let agentType of agentService.agentTypes">
-                        <td>{{agentType}}</td>
+                        <td>{{agentType.name}}</td>
+                        <td>{{agentType.hostAlias}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -3,6 +3,8 @@ package agents;
 import java.util.HashMap;
 import java.util.List;
 
+import models.AgentType;
+
 public interface CachedAgentsRemote {
 
 	public HashMap<AID, Agent> getRunningAgents();
@@ -16,4 +18,10 @@ public interface CachedAgentsRemote {
 	public void setRemoteRunningAgents(List<AID> agents);
 	
 	public void removeAgent(AID aid);
+
+	void addAgentType(AgentType agentType);
+
+	List<AgentType> getAgentTypes();
+
+	public void setAgentTypes(List<AgentType> agentTypes);
 }

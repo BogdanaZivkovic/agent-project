@@ -80,9 +80,9 @@ public class JndiTreeParser {
 		ejbName = extractAgentName(ejbName);
 		if (!ignored.contains(ejbName)) {
 			if (parentModule.equals("")) {
-				return new AgentType(ejbName);
+				return new AgentType(ejbName,  System.getProperty("jboss.node.name") + ":8080");
 			} else {
-				return new AgentType(ejbName);
+				return new AgentType(ejbName,  System.getProperty("jboss.node.name") + ":8080");
 			}
 		}
 		return null;

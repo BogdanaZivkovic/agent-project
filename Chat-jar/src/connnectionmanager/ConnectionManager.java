@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agents.AID;
+import models.AgentType;
 import models.User;
 
 public interface ConnectionManager {
@@ -65,6 +66,12 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void agentRunningNofityNodes();
+	
+	@POST
+	@Path("/node/agentTypes")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void agentTypesNofityNodes();
 
 	@POST
 	@Path("/users/loggedIn")
@@ -83,4 +90,11 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void runningAgentsForNodes(List<AID> agents);
+	
+	@POST
+	@Path("/agents/runningAgents")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void agentTypesForNodes(List<AgentType> agentTypes);
+	
 }

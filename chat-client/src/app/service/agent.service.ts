@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Agent } from '../model/agent';
+import { AgentType } from '../model/agentType';
 
 const baseUrl = 'http://localhost:8080/Chat-war/api/agents/';
 
@@ -10,7 +11,7 @@ const baseUrl = 'http://localhost:8080/Chat-war/api/agents/';
 export class AgentService {
 
   agents: Agent[] = [];
-  agentTypes: String [] = [];
+  agentTypes: AgentType [] = [];
   performatives: String [] = [];
 
   constructor(private http : HttpClient) {}

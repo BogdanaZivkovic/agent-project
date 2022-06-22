@@ -37,14 +37,18 @@ public class ChatRestBean implements ChatRest {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
+		ACLMessage message = new ACLMessage();
+		
 		for (User loggedInUser : chatManager.loggedInUsers()) {
 			if(loggedInUser.getHost().getAlias().equals(System.getProperty("jboss.node.name") + ":8080")) {
-				ACLMessage message = new ACLMessage();
-				message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType()));
-				message.userArgs.put("command", "GET_LOGGEDIN");
-				messageManager.post(message);
+				AID receiverAID = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType());
+				message.receivers.add(receiverAID);	
 			}
 		}
+		
+		message.userArgs.put("command", "GET_REGISTERED");
+		messageManager.post(message);
+		
 		return Response
 				.status(Response.Status.CREATED).entity("SUCCESS")
 				.entity(user)
@@ -61,7 +65,7 @@ public class ChatRestBean implements ChatRest {
 		User currentUser = chatManager.findByUsername(user.getUsername());	
 		
 		String agentName = "ejb:Chat-ear/Chat-jar//" + "UserAgent" + "!" + Agent.class.getName() + "?stateful";
-		agentManager.startAgent(agentName, new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent")));
+		agentManager.startAgent(agentName, new AID(currentUser.getUsername(), currentUser.getHost(), new AgentType("UserAgent", currentUser.getHost().getAlias())));
 		
 		for (User loggedInUser : chatManager.loggedInUsers()) {
 			
@@ -69,7 +73,7 @@ public class ChatRestBean implements ChatRest {
 				ACLMessage messageLoggedInUsers = new ACLMessage();
 				ACLMessage messageRunningAgents = new ACLMessage();
 				
-				AID aid = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent"));
+				AID aid = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent", loggedInUser.getHost().getAlias()));
 				
 				messageLoggedInUsers.receivers.add(aid);
 				messageRunningAgents.receivers.add(aid);
@@ -92,7 +96,7 @@ public class ChatRestBean implements ChatRest {
 		
 		User user = chatManager.findByUsername(username);
 		ACLMessage message = new ACLMessage();
-		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent")));
+		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
 		message.userArgs.put("command", "GET_LOGGEDIN");
 		
 		messageManager.post(message);
@@ -104,7 +108,7 @@ public class ChatRestBean implements ChatRest {
 		User user = chatManager.findByUsername(username);
 		ACLMessage message = new ACLMessage();
 		System.out.println(user.getHost().getAddress());
-		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent")));
+		message.receivers.add(new AID(username, user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
 		message.userArgs.put("command", "GET_REGISTERED");
 		
 		messageManager.post(message);
@@ -124,7 +128,7 @@ public class ChatRestBean implements ChatRest {
 		if (user != null) {
 			aid.setHost(user.getHost());		
 			aid.setName(username);
-			aid.setType(new AgentType("UserAgent"));
+			aid.setType(new AgentType("UserAgent", user.getHost().getAlias()));
 		}
 		
 		agentManager.stopAgent(aid);
@@ -133,7 +137,7 @@ public class ChatRestBean implements ChatRest {
 		ACLMessage messageRunningAgents = new ACLMessage();
 		
 		for (User loggedInUser : chatManager.loggedInUsers()) {			
-			AID receiverAID = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent"));
+			AID receiverAID = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent", loggedInUser.getHost().getAlias()));
 			message.receivers.add(receiverAID);
 			messageRunningAgents.receivers.add(receiverAID);
 		}
