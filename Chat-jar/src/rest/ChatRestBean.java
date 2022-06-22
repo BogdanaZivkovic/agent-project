@@ -129,14 +129,20 @@ public class ChatRestBean implements ChatRest {
 		
 		agentManager.stopAgent(aid);
 		
-		for (User loggedInUser : chatManager.loggedInUsers()) {
-			
-			ACLMessage message = new ACLMessage();
-			message.receivers.add(new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent")));
-			message.userArgs.put("command", "GET_LOGGEDIN");
-			
-			messageManager.post(message);
+		ACLMessage message = new ACLMessage();
+		ACLMessage messageRunningAgents = new ACLMessage();
+		
+		for (User loggedInUser : chatManager.loggedInUsers()) {			
+			AID receiverAID = new AID(loggedInUser.getUsername(), loggedInUser.getHost(), new AgentType("UserAgent"));
+			message.receivers.add(receiverAID);
+			messageRunningAgents.receivers.add(receiverAID);
 		}
+		
+		message.userArgs.put("command", "GET_LOGGEDIN");
+		messageRunningAgents.userArgs.put("command", "GET_RUNNING_AGENTS");
+		
+		messageManager.post(message);
+		messageManager.post(messageRunningAgents);		
 		
 		return Response.status(Response.Status.OK).build();
 	}

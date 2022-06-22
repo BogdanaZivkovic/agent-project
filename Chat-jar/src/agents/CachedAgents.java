@@ -8,6 +8,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 
+import models.User;
+
 @Singleton
 @LocalBean
 @Remote(CachedAgentsRemote.class)
@@ -74,8 +76,9 @@ public class CachedAgents implements CachedAgentsRemote{
 			String runningAgentName = agentAID.getName();
 			
 			if(address.equals(runningAgentAddress) && alias.equals(runningAgentAlias) && agentTypeName.equals(runningAgentAgentTypeName) && name.equals(runningAgentName)) {
-				runningAgentsAIDS.remove(aid);
-				runningAgents.remove(aid);
+				runningAgents.remove(agentAID);
+				runningAgentsAIDS.remove(agentAID);
+				break;
 			}
 		}
 	}
