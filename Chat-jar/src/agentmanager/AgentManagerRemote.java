@@ -35,4 +35,6 @@ public interface AgentManagerRemote {
 
 	void addAgentTypes(List<AgentType> agentTypes);
 
+	public void removeAgentType(AgentType agentType);
+
 }

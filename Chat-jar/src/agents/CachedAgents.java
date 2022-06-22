@@ -126,4 +126,15 @@ public class CachedAgents implements CachedAgentsRemote{
 			}
 		}
 	}
+
+	@Override
+	public void removeAgentType(AgentType agentType) {
+		agentTypes.remove(agentType);
+		/*for(AgentType at: agentTypes) {
+			if(at.getName().equals(agentType.getName()) && at.getHostAlias().equals(anObject)) {
+				agentTypes.remove(agentType);
+				
+			}
+		}*/
+	}
 }

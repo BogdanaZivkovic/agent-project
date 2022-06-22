@@ -102,5 +102,11 @@ public interface ConnectionManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void agentTypesForNodes(List<AgentType> agentTypes);
+
+	@POST
+	@Path("/agents/removeAgentType")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	void removeAgentType(String nodeAlias);
 	
 }
