@@ -43,6 +43,7 @@ public class ChatManagerBean implements ChatManagerRemote, ChatManagerLocal{
 		
 		registered.add(user); 
 		connectionManager.registerNotifyNodes();
+		connectionManager.agentTypesNofityNodes();
 		return user;
 	}
 
