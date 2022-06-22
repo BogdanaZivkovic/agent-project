@@ -13,7 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Chat-war"/>
-	<classpathentry kind="lib" path="lib/jboss-cli-client.jar"/>
-	<classpathentry kind="lib" path="lib/jboss-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bogdana/Desktop/agent-project/Chat-ear/EarContent/lib/jboss-cli-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bogdana/Desktop/agent-project/Chat-ear/EarContent/lib/jboss-client.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

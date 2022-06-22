@@ -44,8 +44,8 @@ public class MessageRestBean implements MessageRest{
 		
 		if(hostAlias.equals(System.getProperty("jboss.node.name") + ":8080")) {
 			ACLMessage aclMessage = new ACLMessage();
-			aclMessage.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
-			aclMessage.sender = new AID(message.getSender().getUsername(), message.getSender().getHost(), new AgentType("UserAgent", message.getSender().getHost().getAlias()));
+			aclMessage.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", hostAlias)));
+			aclMessage.sender = new AID(message.getSender().getUsername(), message.getSender().getHost(), new AgentType("UserAgent", hostAlias));
 			aclMessage.contentObj = message;
 			aclMessage.content = message.getContent();
 			aclMessage.userArgs.put("command", "MESSAGE");
