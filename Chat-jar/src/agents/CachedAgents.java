@@ -37,21 +37,10 @@ public class CachedAgents implements CachedAgentsRemote{
 		
 		for(Agent agent : runningAgents.values()) {
 			
-			String address = agent.getAid().getHost().getAddress();
-			System.out.print("AGENT" + address);
-			System.out.print("AID" + aid.getHost().getAddress());
-			
-			String alias = agent.getAid().getHost().getAlias();
-			System.out.print("AGENT" + alias);
-			System.out.print("AID" + aid.getHost().getAlias());
-			
-			String name = agent.getAid().getName();
-			System.out.print("AGENT" + name);
-			System.out.print("AID" + aid.getName());
-			
+			String address = agent.getAid().getHost().getAddress();			
+			String alias = agent.getAid().getHost().getAlias();			
+			String name = agent.getAid().getName();			
 			String agentType = agent.getAid().getType().getName();
-			System.out.print("AGENT" + agentType);
-			System.out.print("AID" + aid.getType().getName());
 			
 			if(name.equals(aid.getName()) && address.equals(aid.getHost().getAddress()) && alias.equals(aid.getHost().getAlias()) && agentType.equals(aid.getType().getName())) {
 				return agent;
@@ -72,7 +61,22 @@ public class CachedAgents implements CachedAgentsRemote{
 
 	@Override
 	public void removeAgent(AID aid) {
-		runningAgentsAIDS.remove(aid);
-		runningAgents.remove(aid);
+		String address = aid.getHost().getAddress();
+		String alias = aid.getHost().getAlias();
+		String agentTypeName = aid.getType().getName();
+		String name = aid.getName();
+		
+		for(AID agentAID: runningAgentsAIDS) {
+			
+			String runningAgentAddress = agentAID.getHost().getAddress();
+			String runningAgentAlias = agentAID.getHost().getAlias();
+			String runningAgentAgentTypeName = agentAID.getType().getName();
+			String runningAgentName = agentAID.getName();
+			
+			if(address.equals(runningAgentAddress) && alias.equals(runningAgentAlias) && agentTypeName.equals(runningAgentAgentTypeName) && name.equals(runningAgentName)) {
+				runningAgentsAIDS.remove(aid);
+				runningAgents.remove(aid);
+			}
+		}
 	}
 }
