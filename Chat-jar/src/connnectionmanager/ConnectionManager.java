@@ -92,7 +92,7 @@ public interface ConnectionManager {
 	public void runningAgentsForNodes(List<AID> agents);
 	
 	@POST
-	@Path("/agents/runningAgents")
+	@Path("/agents/agentTypes")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void agentTypesForNodes(List<AgentType> agentTypes);
