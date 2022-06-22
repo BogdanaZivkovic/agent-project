@@ -51,7 +51,8 @@ public interface ConnectionManager {
 	
 	@GET
 	@Path("/agents/agentTypes")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public List<AgentType> getAgentTypes();
 	
 	@POST
