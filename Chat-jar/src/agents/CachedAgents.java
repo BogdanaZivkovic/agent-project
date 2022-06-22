@@ -56,6 +56,11 @@ public class CachedAgents implements CachedAgentsRemote{
 		this.agentTypes = agentTypes;
 		
 	}
+	
+	@Override
+	public void addAgentTypes(List<AgentType> agentTypes) {
+		this.agentTypes.addAll(agentTypes);
+	}
 
 	@Override
 	public HashMap<AID, Agent> getRunningAgents() {

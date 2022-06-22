@@ -49,6 +49,11 @@ public interface ConnectionManager {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String pingNode();
 	
+	@GET
+	@Path("/agents/agentTypes")
+	@Produces(MediaType.TEXT_PLAIN)
+	public List<AgentType> getAgentTypes();
+	
 	@POST
 	@Path("/node/login")
 	@Produces(MediaType.APPLICATION_JSON)

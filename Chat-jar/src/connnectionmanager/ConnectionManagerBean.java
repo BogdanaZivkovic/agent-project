@@ -108,6 +108,8 @@ public class ConnectionManagerBean implements ConnectionManager{
 				rest.loggedInForNodes(chatManager.loggedInUsers());
 				rest.registeredForNodes(chatManager.registeredUsers());
 				rest.runningAgentsForNodes(agentManager.getRemoteRunningAgents());
+				List<AgentType> agentTypes = rest.getAgentTypes();
+				agentManager.addAgentTypes(agentTypes);
 				rest.agentTypesForNodes(agentManager.getAvailableAgentTypes());
 				resteasyClient.close();
 			}
@@ -363,9 +365,14 @@ public class ConnectionManagerBean implements ConnectionManager{
 			}
 						
 			message.receivers.add(new AID(user.getUsername(), user.getHost(), new AgentType("UserAgent", user.getHost().getAlias())));
+			
 		}
 		
 		messageManager.post(message);
 	}
 
+	@Override
+	public List<AgentType> getAgentTypes() {
+		return agentManager.getAvailableAgentTypes();
+	}
 }

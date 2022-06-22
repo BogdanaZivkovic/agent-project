@@ -33,4 +33,6 @@ public interface AgentManagerRemote {
 
 	public void setAgentTypes(List<AgentType> agentTypes);
 
+	void addAgentTypes(List<AgentType> agentTypes);
+
 }

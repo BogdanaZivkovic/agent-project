@@ -81,4 +81,9 @@ public class AgentManagerBean implements AgentManagerRemote {
 	public void setAgentTypes(List<AgentType> agentTypes) {
 		cachedAgents.setAgentTypes(agentTypes);
 	}
+	
+	@Override
+	public void addAgentTypes(List<AgentType> agentTypes) {
+		cachedAgents.addAgentTypes(agentTypes);
+	}
 }

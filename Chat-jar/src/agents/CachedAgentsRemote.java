@@ -24,4 +24,6 @@ public interface CachedAgentsRemote {
 	List<AgentType> getAgentTypes();
 
 	public void setAgentTypes(List<AgentType> agentTypes);
+
+	void addAgentTypes(List<AgentType> agentTypes);
 }
