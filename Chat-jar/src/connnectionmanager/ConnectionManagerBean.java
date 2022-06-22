@@ -208,6 +208,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 			rest.deleteNode(alias);
 			rest.removeLoggedInUser(alias);
 			rest.removeAgent(alias);
+			rest.removeAgentType(alias);
 			client.close();	
 		}
 	}
