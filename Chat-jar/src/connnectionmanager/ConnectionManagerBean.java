@@ -108,7 +108,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 				rest.loggedInForNodes(chatManager.loggedInUsers());
 				rest.registeredForNodes(chatManager.registeredUsers());
 				rest.runningAgentsForNodes(agentManager.getRemoteRunningAgents());
-				//get agent types from new node
+				rest.agentTypesForNodes(agentManager.getAvailableAgentTypes());
 				resteasyClient.close();
 			}
 		}).start();
