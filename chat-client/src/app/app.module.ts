@@ -53,6 +53,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { RunningAgentsComponent } from './running-agents/running-agents.component';
 import { AgentTypesComponent } from './agent-types/agent-types.component';
 import { PerformativesComponent } from './performatives/performatives.component';
+import { ClothingComponent } from './clothing/clothing.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { PerformativesComponent } from './performatives/performatives.component'
     MessagesComponent,
     RunningAgentsComponent,
     AgentTypesComponent,
-    PerformativesComponent
+    PerformativesComponent,
+    ClothingComponent
   ],
   imports: [
     BrowserModule,

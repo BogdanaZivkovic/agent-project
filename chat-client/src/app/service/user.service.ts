@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Agent } from '../model/agent';
 import { AgentType } from '../model/agentType';
+import { ClothingItem } from '../model/clothingItem';
 import { Message } from '../model/message';
 import { User } from '../model/user';
 import { AgentService } from './agent.service';
+import { ClothingService } from './clothing.service';
 import { MessageService } from './message.service';
 
 const baseUrl = 'http://localhost:8080/Chat-war/api/users/';
@@ -21,14 +23,14 @@ export class UserService {
   registeredUsers: User[] = [];
   user: User = new User('', '');
 
-  constructor(private http : HttpClient, private router: Router, private messageService : MessageService, private agentService: AgentService) { }
+  constructor(private http : HttpClient, private router: Router, private messageService : MessageService, private agentService: AgentService, private clothingService : ClothingService) { }
 
   signIn(user : User ) {
     return this.http.post(baseUrl + "login", user).subscribe({
       next: (data) => {
         this.user = data as User;
         this.isSignedIn = true;
-        initSocket(this, this.router, this.messageService, this.agentService);
+        initSocket(this, this.router, this.messageService, this.agentService, this.clothingService);
       },
       error: () => {alert("Error: Please enter correct username and password!")}
     })
@@ -59,7 +61,7 @@ export class UserService {
   }
 }
 
-function initSocket(userService: UserService, router: Router, messageService : MessageService, agentService : AgentService) {
+function initSocket(userService: UserService, router: Router, messageService : MessageService, agentService : AgentService, clothingService : ClothingService) {
   let connection: WebSocket|null = new WebSocket("ws://localhost:8080/Chat-war/ws/" + userService.user.username); 
 
   connection.onopen = function () {
@@ -132,6 +134,16 @@ function initSocket(userService: UserService, router: Router, messageService : M
         }
      });    
      messageService.messages = messages;   
+    }
+    else if(data[0] == "CLOTHING") {
+      let clothingItems: ClothingItem[] = [];
+      data[1].split("|").forEach((clothingItem: string) => {
+        if (clothingItem) {
+          let clothingItemData = clothingItem.split(",");   
+          clothingItems.push(new ClothingItem(clothingItemData[0], clothingItemData[1], clothingItemData[2], clothingItemData[3]))
+        }
+     });    
+     clothingService.clothingItems = clothingItems;  
     }
     else if(data[0] == "MESSAGE") {
       let messageData = data[1].split(",");   

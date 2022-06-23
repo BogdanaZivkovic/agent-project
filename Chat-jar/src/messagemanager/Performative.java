@@ -23,5 +23,7 @@ public enum Performative {
 	REQUEST_WHEN, 
 	REQUEST_WHENEVER, 
 	SUBSCRIBE,
-	RESUME
+	RESUME, 
+	COLLECT,
+	SEARCH
 }

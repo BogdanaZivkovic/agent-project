@@ -10,6 +10,7 @@ import { SignedInUsersComponent } from './signed-in-users/signed-in-users.compon
 import { RunningAgentsComponent } from './running-agents/running-agents.component';
 import { AgentTypesComponent } from './agent-types/agent-types.component';
 import { PerformativesComponent } from './performatives/performatives.component';
+import { ClothingComponent } from './clothing/clothing.component';
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent},
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'messages', component: MessagesComponent},
   { path: 'running-agents', component: RunningAgentsComponent},
   { path: 'agent-types', component: AgentTypesComponent},
-  { path: 'performatives', component: PerformativesComponent}
+  { path: 'performatives', component: PerformativesComponent},
+  { path: 'clothing', component: ClothingComponent}
 ];
 
 @NgModule({

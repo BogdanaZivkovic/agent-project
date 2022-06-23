@@ -1,0 +1,25 @@
+<div class="container-fluid container-bg">
+    <div class="row justify-content-center">
+        <div class="col-md-10 margin-class">
+            <h2 style="text-align: center;">Clothing items</h2>
+            <table matSort (matSortChange)="sortData($event)" class="table">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="name">Name</th>
+                        <th mat-sort-header="price">Price</th>
+                        <th mat-sort-header="description">Description</th>
+                        <th mat-sort-header="colors">Colors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let clothingItem of clothingService.clothingItems">
+                        <td>{{clothingItem.productName}}</td>
+                        <td>{{clothingItem.productPrice}}</td>
+                        <td>{{clothingItem.productDescription}}</td>
+                        <td>{{clothingItem.productColorsNumber}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
