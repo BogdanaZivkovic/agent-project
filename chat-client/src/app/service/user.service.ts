@@ -141,9 +141,11 @@ function initSocket(userService: UserService, router: Router, messageService : M
         if (clothingItem) {
           let clothingItemData = clothingItem.split(",");   
           clothingItems.push(new ClothingItem(clothingItemData[0], clothingItemData[1], clothingItemData[2], clothingItemData[3]))
-        }
-     });    
-     clothingService.clothingItems = clothingItems;  
+          }
+      });    
+      for(let clothingItem of clothingItems) {
+        clothingService.clothingItems.push(clothingItem);
+      } 
     }
     else if(data[0] == "MESSAGE") {
       let messageData = data[1].split(",");   

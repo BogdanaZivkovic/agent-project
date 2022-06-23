@@ -36,9 +36,10 @@ public class CollectorAgent implements Agent {
 	@Override
 	public void handleMessage(ACLMessage message) {
 		
+		String website = (String) message.userArgs.get("command");
 		List<ClothingItem> clothingItems = new ArrayList<>();
 		try {
-			clothingItems = webScraping();
+			clothingItems = webScraping(website);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,28 +60,55 @@ public class CollectorAgent implements Agent {
 		return id;
 	}
 	
-	private List<ClothingItem> webScraping() throws IOException {
-		Document doc = Jsoup.connect("https://www.nike.com/gb/w/womens-clothing-5e1x6z6ymx6").timeout(6000).get();
-		Elements div = doc.select("div.product-grid__items");
-		
+	private List<ClothingItem> webScraping(String website) throws IOException {
 		List<ClothingItem> clothingItems = new ArrayList<>();
-		
-		for(Element e : div.select("div.product-card__info")) {		
-						
-				String productPrice = "";
-				String productDescription = "";
-				String productColorsNumber = "";
-				String productName = "";
-				
-				productPrice = e.select("div.product-price").text();			
-				productDescription = e.select("div.product-card__subtitle").text();
-				productColorsNumber = e.select("div.product-card__product-count").text();
-				productName = e.select("div.product-card__title").text();
-				
-				System.out.println(productName + " " + productPrice + " " + productDescription + " " + productColorsNumber);
-				
-				ClothingItem clothingItem = new ClothingItem(productName, productPrice, productDescription, productColorsNumber);
-				clothingItems.add(clothingItem);
+			
+		if(website.equals("Website 1")) {
+			Document doc = Jsoup.connect("https://www.nike.com/gb/w/womens-clothing-5e1x6z6ymx6").timeout(6000).get();	
+			Elements div = doc.select("div.product-grid__items");
+			
+			for(Element e : div.select("div.product-card__info")) {		
+							
+					String productPrice = "";
+					String productDescription = "";
+					String productColorsNumber = "";
+					String productName = "";
+					
+					productPrice = e.select("div.product-price").text();			
+					productDescription = e.select("div.product-card__subtitle").text();
+					productColorsNumber = e.select("div.product-card__product-count").text();
+					productName = e.select("div.product-card__title").text();
+					
+					System.out.println("NIKE: " + productName + " " + productPrice + " " + productDescription + " " + productName);
+	
+					ClothingItem clothingItem = new ClothingItem(productName, productPrice, productDescription, productColorsNumber);
+					clothingItems.add(clothingItem);
+			}
+		}
+		else {
+			Document doc = Jsoup.connect("https://www.converse.com/shop/womens?prefn1=pillar&prefv1=Clothing").timeout(6000).get();
+			Elements div = doc.select("div.plp-grid");
+			
+			for(Element e : div.select("div.product-tile")) {		
+							
+					String productPrice = "";
+					String productDescription = "";
+					String productColorsNumber = "";
+					String productName = "";
+					
+					productPrice = e.select("span.product-price--sales").text();			
+					productDescription = e.select("p.product-tile__secondary-badge").text();
+					productColorsNumber = e.select("p.product-tile__swatch-text").text();
+					if(productColorsNumber.equals(null) || productColorsNumber.equals("")) {
+						productColorsNumber = "1 color available";
+					}
+					productName = e.select("a.product-tile__url").text();
+					
+					System.out.println("CONVERSE:" + productName + " " + productPrice + " " + productDescription + " " + productName);
+	
+					ClothingItem clothingItem = new ClothingItem(productName, productPrice, productDescription, productColorsNumber);
+					clothingItems.add(clothingItem);
+			}
 		}
 		
 		return clothingItems;

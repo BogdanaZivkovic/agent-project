@@ -61,7 +61,18 @@ public class WebScraperBean implements WebScraperRest {
 		message.receivers = collectors;
 		message.replyTo = searcher;
 		message.performative = Performative.COLLECT;
+		message.userArgs.put("command", "Website 1");
 		messageManager.post(message);
+		
+		ACLMessage message2 = new ACLMessage();
+		message2.sender = master;
+		List<AID> collectors2 = new ArrayList<>();
+		collectors2.add(collector);
+		message2.receivers = collectors2;
+		message2.replyTo = searcher;
+		message2.performative = Performative.COLLECT;
+		message2.userArgs.put("command", "Website 2");
+		messageManager.post(message2);
 		
 	}
 	
