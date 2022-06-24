@@ -13,6 +13,7 @@ export class ClothingComponent implements OnInit {
   constructor(public clothingService : ClothingService, public userService : UserService) { }
 
   ngOnInit(): void {
+    this.clothingService.clothingItems = [];
     this.clothingService.getClothingItems(this.userService.user.username).subscribe();
   }
 

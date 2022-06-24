@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
+import agents.AID;
+
 
 public interface WebScraperRest {
 
@@ -15,4 +17,10 @@ public interface WebScraperRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public void getClothingItems(@PathParam("user") String username);
+
+	@GET
+	@Path("/supplyClothingItems")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	void supplyClothingItems(AID aid, String website);
 }

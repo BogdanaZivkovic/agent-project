@@ -47,7 +47,6 @@ public class SearchAgent implements Agent  {
 			content +=  clothingItem.getProductName() + "," + clothingItem.getProductPrice() + "," + clothingItem.getProductDescription() + "," + clothingItem.getProductColorsNumber() + "|";
 		}
 		
-		System.out.println(message.replyTo.getType().getName());
 		reply(message.replyTo, content );
 	}
 

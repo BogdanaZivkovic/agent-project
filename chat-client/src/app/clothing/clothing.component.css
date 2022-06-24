@@ -21,9 +21,26 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
 
+  thead, tbody { display: block; }
+
+  tbody {
+      height: 500px;       
+      overflow-y: auto;    
+      overflow-x: hidden; 
+  }
+
   table {
     border-collapse:separate; 
     border-spacing:10px;
+    width: 800px; 
+  }
+
+  tr {
+    width: 800px;
+  }
+
+  tbody td, thead th {
+    width: 200px;
   }
   
   h2 {

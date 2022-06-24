@@ -104,8 +104,7 @@ public class AgentRestBean implements AgentRest{
 
 	@Override
 	public void sendACLMessage(ACLMessage message) {
-		// TODO Auto-generated method stub
-		
+		messageManager.post(message);
 	}
 
 	@Override

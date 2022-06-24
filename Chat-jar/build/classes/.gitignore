@@ -1,4 +1,10 @@
-/agents/
-/rest/
+/META-INF/
 /agentmanager/
+/agents/
+/chatmanager/
+/connnectionmanager/
+/messagemanager/
+/messagesrepo/
 /models/
+/rest/
+/util/
