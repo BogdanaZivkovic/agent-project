@@ -63,7 +63,7 @@ public class WebScraperBean implements WebScraperRest {
 		String address = getNodeAddress();
 		AgentCenter agentCenter = new AgentCenter(address, alias);
 		
-		AID aid = new AID(username, agentCenter, new AgentType("UserAgent", alias));
+		AID aid = new AID(username, agentCenter, new AgentType("MasterAgent", alias));
 		AID master = startMasterAgent(agentCenter, username);
 		
 		for(int i=0; i<websites.length; i++) {
