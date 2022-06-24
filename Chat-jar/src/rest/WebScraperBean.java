@@ -26,6 +26,7 @@ import agents.AID;
 import agents.Agent;
 import chatmanager.ChatManagerRemote;
 import connnectionmanager.ConnectionManager;
+import dto.SupplyDTO;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
 import messagemanager.Performative;
@@ -88,13 +89,18 @@ public class WebScraperBean implements WebScraperRest {
 				ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
 				ResteasyWebTarget rtarget = resteasyClient.target("http://"  + nodeAlias + "/Chat-war/api/webScrape");
 				WebScraperRest rest = rtarget.proxy(WebScraperRest.class);
-				rest.supplyClothingItems(aid, websites[i]);
+				
+				SupplyDTO supply = new SupplyDTO();
+				supply.setAid(aid);
+				supply.setWebsite(websites[i]);
+				
+				rest.supplyClothingItems(supply);
 			}
 		}		
 	}
 	
 	@Override
-	public void supplyClothingItems (AID aid, String website) {
+	public void supplyClothingItems (SupplyDTO supply) {
 		
 		String alias = System.getProperty("jboss.node.name") + ":8080";	
 		String address = getNodeAddress();
@@ -105,13 +111,13 @@ public class WebScraperBean implements WebScraperRest {
 		AID collector = startCollectorAgent(agentCenter);
 		
 		ACLMessage message = new ACLMessage();
-		message.sender = aid;
+		message.sender = supply.getAid();
 		List<AID> collectors = new ArrayList<>();
 		collectors.add(collector);
 		message.receivers = collectors;
 		message.replyTo = searcher;
 		message.performative = Performative.COLLECT;
-		message.userArgs.put("command", website);
+		message.userArgs.put("command", supply.getWebsite());
 		messageManager.post(message);
 		
 	}
