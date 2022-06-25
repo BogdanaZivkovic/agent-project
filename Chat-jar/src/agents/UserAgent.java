@@ -16,6 +16,7 @@ import messagemanager.MessageManagerRemote;
 import messagesrepo.MessagesRepoRemote;
 import models.AgentCenter;
 import models.AgentType;
+import models.Message;
 import models.User;
 import ws.WSChat;
 
@@ -72,9 +73,10 @@ public class UserAgent implements Agent {
 				break;
 			case "MESSAGE":
 				response = "MESSAGE!";
-				String sender = (String) message.sender.getName();
-				String content = (String) message.content;
-				models.Message msg = new models.Message(new User(receiver, "", new AgentCenter()), new User(sender, "", new AgentCenter()), LocalDateTime.now(), "NASLOV", content);
+				//String sender = (String) message.sender.getName();
+				//String content = (String) message.content;
+				models.Message msg = (Message) message.contentObj;
+				//models.Message msg = new models.Message(new User(receiver, "", new AgentCenter()), new User(sender, "", new AgentCenter()), LocalDateTime.now(), "NASLOV", content);
 				messagesRepo.addMessage(msg);
 				response += msg.toString();
 				break;
