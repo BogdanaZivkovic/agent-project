@@ -76,6 +76,7 @@ public class UserAgent implements Agent {
 				//String sender = (String) message.sender.getName();
 				//String content = (String) message.content;
 				models.Message msg = (Message) message.contentObj;
+				msg.setDate(LocalDateTime.now());
 				//models.Message msg = new models.Message(new User(receiver, "", new AgentCenter()), new User(sender, "", new AgentCenter()), LocalDateTime.now(), "NASLOV", content);
 				messagesRepo.addMessage(msg);
 				response += msg.toString();
