@@ -226,6 +226,9 @@ public class ConnectionManagerBean implements ConnectionManager{
 						System.out.println("Deleting unresponsive node" + cn);
 						connectedNodes.remove(cn);
 						notifyAllToShutDownNode(cn);
+						removeLoggedInUser(cn);
+						removeAgent(cn);
+						removeAgentType(cn);
 					}
 				}
 			}).start();
