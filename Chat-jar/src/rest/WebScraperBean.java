@@ -95,14 +95,20 @@ public class WebScraperBean implements WebScraperRest {
 				SupplyDTO supply = new SupplyDTO();
 				supply.setAid(aid);
 				supply.setWebsite(websites[i]);
+				supply.setMaxColorNumber(searchDTO.getMaxColorNumber());
+				supply.setMinColorNumber(searchDTO.getMinColorNumber());
+				supply.setMinPrice(searchDTO.getMinPrice());
+				supply.setMaxPrice(searchDTO.getMaxPrice());
+				supply.setProductName(searchDTO.getProductName());
+				supply.setProductDescription(searchDTO.getProductDescription());
 				
-				rest.supplyClothingItems(supply, searchDTO);
+				rest.supplyClothingItems(supply);
 			}
 		}		
 	}
 	
 	@Override
-	public void supplyClothingItems (SupplyDTO supply, SearchDTO searchDTO) {
+	public void supplyClothingItems (SupplyDTO supply) {
 		
 		String alias = System.getProperty("jboss.node.name") + ":8080";	
 		String address = getNodeAddress();
@@ -120,6 +126,15 @@ public class WebScraperBean implements WebScraperRest {
 		message.replyTo = searcher;
 		message.performative = Performative.COLLECT;
 		message.userArgs.put("command", supply.getWebsite());
+		SearchDTO searchDTO = new SearchDTO();
+		
+		searchDTO.setMaxColorNumber(supply.getMaxColorNumber());
+		searchDTO.setMinColorNumber(supply.getMinColorNumber());
+		searchDTO.setMaxPrice(supply.getMaxPrice());
+		searchDTO.setMinPrice(supply.getMinPrice());
+		searchDTO.setProductName(supply.getProductName());
+		searchDTO.setProductDescription(supply.getProductDescription());
+		
 		message.userArgs.put("filter", searchDTO);
 		messageManager.post(message);
 		

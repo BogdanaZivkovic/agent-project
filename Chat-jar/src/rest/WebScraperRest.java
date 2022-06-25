@@ -1,7 +1,6 @@
 package rest;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
@@ -24,5 +23,5 @@ public interface WebScraperRest {
 	@Path("/supplyClothingItems")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	void supplyClothingItems(SupplyDTO supplyDTO, SearchDTO searchDTO);
+	void supplyClothingItems(SupplyDTO supplyDTO);
 }
