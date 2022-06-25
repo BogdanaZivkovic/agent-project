@@ -3,9 +3,9 @@
 /agents/
 /chatmanager/
 /connnectionmanager/
+/dto/
 /messagemanager/
 /messagesrepo/
 /models/
 /rest/
 /util/
-/dto/

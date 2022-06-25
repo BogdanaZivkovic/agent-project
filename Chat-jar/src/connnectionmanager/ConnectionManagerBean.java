@@ -151,6 +151,7 @@ public class ConnectionManagerBean implements ConnectionManager{
 				agentManager.stopAgent(aid);
 			}
 		}
+		runningAgentsForNodes(agentManager.getRemoteRunningAgents());
 	}
 	
 	@Override
