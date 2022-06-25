@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ClothingItem } from '../model/clothingItem';
+import { Search } from '../model/search';
 
 const baseUrl = 'http://localhost:8080/Chat-war/api/webScrape/';
 
@@ -13,7 +14,7 @@ export class ClothingService {
 
   constructor(private http : HttpClient) { }
 
-  getClothingItems(username : string) {
-    return this.http.get(baseUrl + "clothingItems/" + username);
+  getClothingItems(username : string, search: Search) {
+    return this.http.post(baseUrl + "clothingItems/" + username, search);
   }
 }

@@ -26,6 +26,7 @@ import agents.AID;
 import agents.Agent;
 import chatmanager.ChatManagerRemote;
 import connnectionmanager.ConnectionManager;
+import dto.SearchDTO;
 import dto.SupplyDTO;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
@@ -53,7 +54,7 @@ public class WebScraperBean implements WebScraperRest {
 	private ConnectionManager connectionManager;
 
 	@Override
-	public void getClothingItems(String username) {
+	public void getClothingItems(String username, SearchDTO searchDTO) {
 		System.out.println("getClothingItems");
 		
 		List<String> nodes = connectionManager.getNodes();
@@ -83,6 +84,7 @@ public class WebScraperBean implements WebScraperRest {
 				message.replyTo = searcher;
 				message.performative = Performative.COLLECT;
 				message.userArgs.put("command", websites[i]);
+				message.userArgs.put("filter", searchDTO);
 				messageManager.post(message);
 			}
 			else {
@@ -94,13 +96,13 @@ public class WebScraperBean implements WebScraperRest {
 				supply.setAid(aid);
 				supply.setWebsite(websites[i]);
 				
-				rest.supplyClothingItems(supply);
+				rest.supplyClothingItems(supply, searchDTO);
 			}
 		}		
 	}
 	
 	@Override
-	public void supplyClothingItems (SupplyDTO supply) {
+	public void supplyClothingItems (SupplyDTO supply, SearchDTO searchDTO) {
 		
 		String alias = System.getProperty("jboss.node.name") + ":8080";	
 		String address = getNodeAddress();
@@ -118,6 +120,7 @@ public class WebScraperBean implements WebScraperRest {
 		message.replyTo = searcher;
 		message.performative = Performative.COLLECT;
 		message.userArgs.put("command", supply.getWebsite());
+		message.userArgs.put("filter", searchDTO);
 		messageManager.post(message);
 		
 	}

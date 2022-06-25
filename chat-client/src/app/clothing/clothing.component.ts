@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
+import { Search } from '../model/search';
 import { ClothingService } from '../service/clothing.service';
 import { UserService } from '../service/user.service';
 
@@ -10,11 +11,18 @@ import { UserService } from '../service/user.service';
 })
 export class ClothingComponent implements OnInit {
 
+  search = new Search('', '', null, null, null, null);
+
   constructor(public clothingService : ClothingService, public userService : UserService) { }
 
   ngOnInit(): void {
     this.clothingService.clothingItems = [];
-    this.clothingService.getClothingItems(this.userService.user.username).subscribe();
+    this.clothingService.getClothingItems(this.userService.user.username, this.search).subscribe();
+  }
+
+  onClickSubmit() {
+    this.clothingService.clothingItems = [];
+    this.clothingService.getClothingItems(this.userService.user.username, this.search).subscribe();
   }
 
   sortData(sort: Sort) {

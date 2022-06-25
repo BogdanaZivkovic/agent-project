@@ -2,8 +2,11 @@ package agents;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -16,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dto.SearchDTO;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManagerRemote;
 import models.ClothingItem;
@@ -38,13 +42,15 @@ public class CollectorAgent implements Agent {
 		
 		String website = (String) message.userArgs.get("command");
 		List<ClothingItem> clothingItems = new ArrayList<>();
+		SearchDTO searchDTO = (SearchDTO) message.userArgs.get("filter");
+		
 		try {
 			clothingItems = webScraping(website);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 				
-		reply(message.replyTo, message.sender, clothingItems);
+		reply(message.replyTo, message.sender, clothingItems, searchDTO);
 	}
 
 	@Override
@@ -69,14 +75,28 @@ public class CollectorAgent implements Agent {
 			
 			for(Element e : div.select("div.product-card__info")) {		
 							
-					String productPrice = "";
+					Double productPrice = null;
 					String productDescription = "";
-					String productColorsNumber = "";
+					Integer productColorsNumber = 1;
 					String productName = "";
+	
+					NumberFormat format = NumberFormat.getInstance(Locale.US);		
+					String priceText = e.select("div.product-price").text().replaceAll("[^\\d\\.]", "");
+					try {
+						Number number = format.parse(priceText);
+						productPrice = number.doubleValue();
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
 					
-					productPrice = e.select("div.product-price").text();			
 					productDescription = e.select("div.product-card__subtitle").text();
-					productColorsNumber = e.select("div.product-card__product-count").text();
+								
+					try {
+						productColorsNumber = Integer.parseInt(e.select("div.product-card__product-count").text().replaceAll("[^\\d]", ""));		
+					} catch (NumberFormatException exception) {
+						productColorsNumber = 1;
+					}
+					
 					productName = e.select("div.product-card__title").text();
 					
 					System.out.println("NIKE: " + productName + " " + productPrice + " " + productDescription + " " + productName);
@@ -91,18 +111,30 @@ public class CollectorAgent implements Agent {
 			
 			for(Element e : div.select("div.product-tile")) {		
 							
-					String productPrice = "";
+					Double productPrice = null;
 					String productDescription = "";
-					String productColorsNumber = "";
+					Integer productColorsNumber = 1;
 					String productName = "";
 					
-					productPrice = e.select("span.product-price--sales").text();			
-					productDescription = e.select("p.product-tile__secondary-badge").text();
-					productColorsNumber = e.select("p.product-tile__swatch-text").text();
-					if(productColorsNumber.equals(null) || productColorsNumber.equals("")) {
-						productColorsNumber = "1 color available";
-					}
+					
 					productName = e.select("a.product-tile__url").text();
+					
+					NumberFormat format = NumberFormat.getInstance(Locale.US);		
+					String priceText = e.select("span.product-price--sales").text().replaceAll("[^\\d\\.]", "");
+					try {
+						Number number = format.parse(priceText);
+						productPrice = number.doubleValue();
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
+					
+					productDescription = e.select("p.product-tile__secondary-badge").text();
+					
+					try {
+						productColorsNumber = Integer.parseInt(e.select("p.product-tile__swatch-text").text().replaceAll("[^\\d]", ""));		
+					} catch (NumberFormatException exception) {
+						productColorsNumber = 1;
+					}
 					
 					System.out.println("CONVERSE:" + productName + " " + productPrice + " " + productDescription + " " + productName);
 	
@@ -114,13 +146,14 @@ public class CollectorAgent implements Agent {
 		return clothingItems;
 	}
 	
-	private void reply(AID receiver, AID replyTo, List<ClothingItem> clothingItems) {
+	private void reply(AID receiver, AID replyTo, List<ClothingItem> clothingItems, SearchDTO searchDTO) {
 		ACLMessage message = new ACLMessage();
 		message.sender = id;
 		List<AID> receivers = new ArrayList<>();
 		receivers.add(receiver);
 		message.receivers = receivers;
 		message.replyTo = replyTo;
+		message.userArgs.put("filter", searchDTO);
 		save(clothingItems);
 		messageManager.post(message);
 	}

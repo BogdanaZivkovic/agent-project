@@ -130,7 +130,7 @@ function initSocket(userService: UserService, router: Router, messageService : M
       data[1].split("|").forEach((message: string) => {
         if (message) {
           let messageData = message.split(",");   
-          messages.push(new Message(userService.user, new User(messageData[0], ""), new Date(messageData[1]), messageData[2], messageData[3]))
+          messages.push(new Message(userService.user, new User(messageData[0], ""), new Date(messageData[1]), messageData[2], messageData[3]));
         }
      });    
      messageService.messages = messages;   
@@ -140,7 +140,7 @@ function initSocket(userService: UserService, router: Router, messageService : M
       data[1].split("|").forEach((clothingItem: string) => {
         if (clothingItem) {
           let clothingItemData = clothingItem.split(",");   
-          clothingItems.push(new ClothingItem(clothingItemData[0], clothingItemData[1], clothingItemData[2], clothingItemData[3]))
+          clothingItems.push(new ClothingItem(clothingItemData[0], parseFloat(clothingItemData[1]), clothingItemData[2], parseInt(clothingItemData[3])));
           }
       });    
       for(let clothingItem of clothingItems) {

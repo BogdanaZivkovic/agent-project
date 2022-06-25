@@ -6,13 +6,13 @@ public class ClothingItem implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private String productName;
-	private String productPrice;
+	private Double productPrice;
 	private String productDescription;
-	private String productColorsNumber;
+	private Integer productColorsNumber;
 	
 	public ClothingItem() {}
 	
-	public ClothingItem(String productName, String productPrice, String productDescription, String productColorsNumber) {
+	public ClothingItem(String productName, Double productPrice, String productDescription, Integer productColorsNumber) {
 		super();
 		this.productDescription = productDescription;
 		this.productPrice = productPrice;
@@ -35,23 +35,23 @@ public class ClothingItem implements Serializable{
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-	
-	public String getProductPrice() {
+
+	public Double getProductPrice() {
 		return productPrice;
 	}
-	
-	public void setProductPrice(String productPrice) {
+
+	public void setProductPrice(Double productPrice) {
 		this.productPrice = productPrice;
 	}
-	
-	public String getProductColorsNumber() {
+
+	public Integer getProductColorsNumber() {
 		return productColorsNumber;
 	}
-	
-	public void setProductColorsNumber(String productColorsNumber) {
+
+	public void setProductColorsNumber(Integer productColorsNumber) {
 		this.productColorsNumber = productColorsNumber;
 	}
-	
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

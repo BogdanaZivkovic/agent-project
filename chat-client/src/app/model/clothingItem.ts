@@ -1,8 +1,8 @@
 export class ClothingItem {
     constructor(
         public productName: string,
-        public productPrice: string,
+        public productPrice: number,
         public productDescription: string,
-        public productColorsNumber: string,
+        public productColorsNumber: number,
     ) {}
 }

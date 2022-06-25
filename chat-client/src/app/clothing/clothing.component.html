@@ -1,7 +1,43 @@
 <div class="container-fluid container-bg">
     <div class="row justify-content-center">
         <div class="col-md-8 margin-class">
+            
             <h2 style="text-align: center;">Clothing items</h2>
+            <form (ngSubmit)="onClickSubmit()" #searchForm="ngForm">
+                <div class="row justify-content-center"> 
+                    <div class="col-4">
+                        <div class="form-group mb-3">
+                            <label for="productName" class="form-label">Product name:</label>
+                            <input type="text" class="form-control" id="productName" placeholder="Product name..." [(ngModel)]="search.productName" name="productName" #productName="ngModel">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="minPrice" class="form-label">Minimum price:</label>
+                            <input type="number" class="form-control" id="minPrice" [(ngModel)]="search.minPrice" name="minPrice" #minPrice="ngModel">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="maxPrice" class="form-label">Maximum price:</label>
+                            <input type="number" class="form-control" id="maxPrice" [(ngModel)]="search.maxPrice" name="maxPrice" #maxPrice="ngModel">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group mb-3">
+                            <label for="productDescription" class="form-label">Product description:</label>
+                            <input type="text" class="form-control" id="productDescription" placeholder="Product description..." [(ngModel)]="search.productDescription" name="productDescription" #productDescription="ngModel">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="minColorNumber" class="form-label">Minimum color number:</label>
+                            <input type="number" class="form-control" id="minColorNumber" [(ngModel)]="search.minColorNumber" name="minColorNumber" #minColorNumber="ngModel">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="maxColorNumber" class="form-label">Maximum color number:</label>
+                            <input type="number" class="form-control" id="maxColorNumber" [(ngModel)]="search.maxColorNumber" name="maxColorNumber" #maxColorNumber="ngModel">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid col-6 mx-auto">
+                    <button class="btn btn-primary" type="submit" [disabled]="!searchForm.form.valid">Search</button>
+                </div>
+            </form>
             <table matSort (matSortChange)="sortData($event)" class="table">
                 <thead>
                     <tr>
