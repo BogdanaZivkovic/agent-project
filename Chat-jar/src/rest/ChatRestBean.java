@@ -124,14 +124,20 @@ public class ChatRestBean implements ChatRest {
 		}
 		
 		AID aid = new AID();
+		AID masterAID = new AID();
 		
 		if (user != null) {
 			aid.setHost(user.getHost());		
 			aid.setName(username);
 			aid.setType(new AgentType("UserAgent", user.getHost().getAlias()));
+			masterAID.setHost(user.getHost());
+			masterAID.setName(username);
+			masterAID.setType(new AgentType("MasterAgent", user.getHost().getAlias()));
 		}
 		
 		agentManager.stopAgent(aid);
+		agentManager.stopAgent(masterAID);
+		
 		
 		ACLMessage message = new ACLMessage();
 		ACLMessage messageRunningAgents = new ACLMessage();
